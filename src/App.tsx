@@ -36,6 +36,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Typography variant="h3" gutterBottom>MUI Typescript Playground</Typography>
+        <Typography variant="h5" gutterBottom>Subtitle ✨</Typography>
         <ControlledSlyder defaultValue={23} />
         <CustomSlider defaultValue={50} />
         <CustomSliderTwo defaultValue={25} $customColor="violet" />
