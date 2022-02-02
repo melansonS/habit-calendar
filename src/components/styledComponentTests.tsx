@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ControlledSlyder from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
@@ -30,11 +30,23 @@ const CustomSliderTwo = styled(ControlledSlyder, {
 );
 
 export default function StyledComponentTests() {
+  const [sliderValue, setSliderValue] = useState(0);
+
+  const updateSliderValue = () => {
+    setSliderValue(sliderValue + 1);
+  };
+
   return (
     <div>
       <ControlledSlyder defaultValue={23} />
-      <CustomSlider defaultValue={50} />
+      <CustomSlider
+        value={sliderValue}
+        onChange={(e, newValue) => {
+          setSliderValue(newValue as number);
+        }}
+      />
       <CustomSliderTwo defaultValue={25} $customColor="violet" />
+      <button type="button" onClick={updateSliderValue}>+1</button>
     </div>
   );
 }
