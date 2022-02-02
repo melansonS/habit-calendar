@@ -1,14 +1,10 @@
-.App {
-  text-align: center;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
-.App-header {
+.App {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -17,6 +13,7 @@
   font-size: calc(10px + 2vmin);
   color: white;
   padding-top: 3em;
+  text-align: center;
 }
 
 .App-link {
