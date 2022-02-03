@@ -1,15 +1,16 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeNamesEnum, allThemes } from './themeColors';
 
 interface IThemeContext {
-  themeName: string;
-  setThemeName: React.Dispatch<React.SetStateAction<string>>;
+  themeName: ThemeNamesEnum;
+  setThemeName: React.Dispatch<React.SetStateAction<ThemeNamesEnum>>;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
 }
 
 export const ThemeContext = createContext<IThemeContext>({
-  themeName: 'one',
+  themeName: ThemeNamesEnum.ONE,
   setThemeName: () => {},
   isDarkMode: false,
   toggleDarkMode: () => {},
@@ -20,14 +21,15 @@ interface IChildren {
 }
 
 export function ThemeContextProvider({ children } : IChildren) {
-  const [themeName, setThemeName] = useState('one');
+  const [themeName, setThemeName] = useState<ThemeNamesEnum>(ThemeNamesEnum.ONE);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const theme = useMemo(() => createTheme({
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
+      primary: allThemes[themeName].primary,
     },
-  }), [isDarkMode]);
+  }), [isDarkMode, themeName]);
   const themeMemo = useMemo(() => ({
     themeName,
     setThemeName,

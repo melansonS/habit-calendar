@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import DarkModeToggle from './darkModeToggle';
+import ThemeSelect from './ThemeSelector';
 
 const pages = [
   { name: 'Home', location: '' },
@@ -92,6 +93,9 @@ function NavBar() {
           >
             LOGO
           </Typography>
+          <Box p={2}>
+            <ThemeSelect />
+          </Box>
           <Box pr={3}>
             <DarkModeToggle />
           </Box>
