@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,35 +8,24 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import DarkModeToggle from './darkModeToggle';
 
 const pages = [
   { name: 'Home', location: '' },
   { name: 'Profile', location: 'profile' },
   { name: 'Calendar', location: 'calendar' },
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = useState<HTMLButtonElement | null>(null);
-  const [anchorElUser, setAnchorElUser] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorElNav(event?.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setAnchorElUser(event?.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -83,11 +72,14 @@ function NavBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-
-                  <Typography textAlign="center">
-                    <Link to={`/${page.location}`}>{page.name}</Link>
-
-                  </Typography>
+                  <Button
+                    component={RouterLink}
+                    to={`/${page.location}`}
+                    key={page.name}
+                    onClick={handleCloseNavMenu}
+                  >
+                    {page.name}
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>
@@ -100,46 +92,8 @@ function NavBar() {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+          <Box pr={3}>
+            <DarkModeToggle />
           </Box>
         </Toolbar>
       </Container>

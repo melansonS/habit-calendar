@@ -21,6 +21,7 @@
     ],
     "rules": {
         "react/jsx-filename-extension": [ "warn", {"extensions": [".tsx"]} ],
+        "max-len": ["warn", { "code": 120, "ignoreComments": true }],
         "import/extensions": [
             "error",
             "ignorePackages",
