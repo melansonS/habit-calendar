@@ -1,11 +1,13 @@
 import React from 'react';
 import {
-  Box, Card, Paper, Typography,
+  Box,
+  Card,
+  Paper,
+  Typography,
+  Tabs,
+  Tab,
 } from '@mui/material';
-
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import StyledComponentTests from './styledComponentTests';
+import StyledComponentTests from '../components/styledComponentTests';
 
 interface ITabPanelProps {
   children: React.ReactNode
@@ -37,7 +39,7 @@ function TabPanel(props : ITabPanelProps) {
 function ColorTabs() {
   const [value, setValue] = React.useState(1);
 
-  const handleChange = (event: any, newValue: number) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

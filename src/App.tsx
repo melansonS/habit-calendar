@@ -10,9 +10,10 @@ import {
 
 import { Container, Paper } from '@mui/material';
 import NavBar from './components/navBar';
-import Homepage from './components/homePage';
-import ProfilePage from './components/profilePage';
-import CalendarPage from './components/calendarPage';
+import HomePage from './pages/homePage';
+import ProfilePage from './pages/profilePage';
+import CalendarPage from './pages/calendarPage';
+import ThemePage from './pages/themePage';
 
 function App() {
   return (
@@ -22,9 +23,10 @@ function App() {
         <Router>
           <NavBar />
           <Routes>
-            <Route path="/" element={<Homepage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/theme" element={<ThemePage />} />
           </Routes>
         </Router>
       </Paper>

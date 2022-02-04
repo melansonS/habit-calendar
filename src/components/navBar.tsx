@@ -11,14 +11,10 @@ import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import pageList from '../utils/pageList';
 import DarkModeToggle from './darkModeToggle';
 import ThemeSelect from './ThemeSelector';
 
-const pages = [
-  { name: 'Home', location: '' },
-  { name: 'Profile', location: 'profile' },
-  { name: 'Calendar', location: 'calendar' },
-];
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = useState<HTMLButtonElement | null>(null);
 
@@ -61,7 +57,7 @@ function NavBar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block' } }}
             >
-              {pages.map((page) => (
+              {pageList.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Button
                     component={RouterLink}
