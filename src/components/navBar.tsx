@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
+import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
@@ -30,7 +31,7 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar color="primary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -39,7 +40,10 @@ function NavBar() {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            LOGO
+            <DateRangeTwoToneIcon
+              color="secondary"
+              fontSize="large"
+            />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -91,7 +95,7 @@ function NavBar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            LOGO
+            <DateRangeTwoToneIcon fontSize="large" />
           </Typography>
           <Box p={2}>
             <ThemeSelect />
