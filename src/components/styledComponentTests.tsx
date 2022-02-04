@@ -53,7 +53,7 @@ export default function StyledComponentTests() {
         $customColor="maroon"
       />
       <CustomSliderTwo defaultValue={25} $customColor="violet" />
-      <Button variant="contained" onClick={updateSliderValue}>+1</Button>
+      <Button color="secondary" variant="contained" onClick={updateSliderValue}>+1</Button>
     </div>
   );
 }

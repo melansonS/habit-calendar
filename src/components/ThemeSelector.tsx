@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-import { ThemeNamesEnum } from '../context/themeColors';
+import { ThemeNamesEnum } from '../utils/colorTypes';
 import { useTheme } from '../context/themeContext';
 
 export default function ThemeSelect() {

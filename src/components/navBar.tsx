@@ -34,19 +34,7 @@ function NavBar() {
     <AppBar color="primary">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-            <DateRangeTwoToneIcon
-              color="secondary"
-              fontSize="large"
-            />
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -71,9 +59,7 @@ function NavBar() {
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
+              sx={{ display: { xs: 'block' } }}
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
@@ -93,7 +79,8 @@ function NavBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            color="secondary"
+            sx={{ flexGrow: 1, display: { xs: 'flex' } }}
           >
             <DateRangeTwoToneIcon fontSize="large" />
           </Typography>

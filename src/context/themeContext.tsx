@@ -1,11 +1,8 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Box } from '@mui/material';
-import {
-  ThemeNamesEnum,
-  allThemes,
-  simpleColorBlend,
-} from './themeColors';
+import allThemes from './themeColors';
+import simpleColorBlend from '../utils/colorUtils';
+import { ThemeNamesEnum } from '../utils/colorTypes';
 
 interface IThemeContext {
   themeName: ThemeNamesEnum;
@@ -15,15 +12,11 @@ interface IThemeContext {
 }
 
 export const ThemeContext = createContext<IThemeContext>({
-  themeName: ThemeNamesEnum.ONE,
+  themeName: ThemeNamesEnum.RED,
   setThemeName: () => {},
   isDarkMode: false,
   toggleDarkMode: () => {},
 });
-
-interface IChildren {
-  children: React.ReactNode
-}
 
 function basePaperBackground(isDarkMode: boolean) {
   return isDarkMode ? '#212121' : '#fff';
@@ -32,8 +25,9 @@ function baseDefaultBackground(isDarkMode: boolean) {
   return isDarkMode ? '#121212' : '#f9f9f9';
 }
 
-export function ThemeContextProvider({ children } : IChildren) {
-  const [themeName, setThemeName] = useState<ThemeNamesEnum>(ThemeNamesEnum.ONE);
+// TODO: major cleanup up all through here...
+export function ThemeContextProvider({ children } : {children: React.ReactNode}) {
+  const [themeName, setThemeName] = useState<ThemeNamesEnum>(ThemeNamesEnum.INDIGO);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const theme = useMemo(() => createTheme({
     palette: {
@@ -66,20 +60,7 @@ export function ThemeContextProvider({ children } : IChildren) {
   return (
     <ThemeContext.Provider value={themeMemo}>
       <ThemeProvider theme={theme}>
-        <>
-          <Box display="flex" flexDirection="row" p={10}>
-            <Box flexGrow={1} p={8} style={{ backgroundColor: defaultPaper }}>
-              {defaultPaper}
-            </Box>
-            <Box flexGrow={1} p={8} style={{ backgroundColor: newPaper }}>
-              {newPaper}
-            </Box>
-            <Box flexGrow={1} p={8} style={{ backgroundColor: theme.palette.primary[isDarkMode ? 'dark' : 'main'] }}>
-              {theme.palette.primary[isDarkMode ? 'dark' : 'main']}
-            </Box>
-          </Box>
-          {children}
-        </>
+        {children}
       </ThemeProvider>
     </ThemeContext.Provider>
   );

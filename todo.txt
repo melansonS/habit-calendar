@@ -1,0 +1,15 @@
+AUTH
+  - Auth0 set up
+    - Sign Up
+    - Tennet
+    - Auth Client
+
+COLORS
+  - find a white []
+
+NODE SERVER ? 
+  - what kind of data am I storing and where am I storing it...
+    - Timestrings? Usernames, theme preferences, streaks
+
+APOLLO SERVER
+  - is this even necessary... ?
