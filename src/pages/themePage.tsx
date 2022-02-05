@@ -8,13 +8,15 @@ import {
   Card,
   Color,
   Grid, PaletteColor,
-  Paper, styled, Typography, useTheme as useMUITheme,
+  Paper, Slider, styled, Typography, useTheme as useMUITheme,
 } from '@mui/material';
 import { TypeText } from '@mui/material/styles/createPalette';
 import createPalette from '@material-ui/core/styles/createPalette';
 import ColorPicker from '../components/colorPicker';
 import { useTheme } from '../context/themeContext';
-import { ConvertRGBAtoHex, stripRGBA } from '../utils/colorUtils';
+import {
+  BLEND_PERCENT, BLEND_STEP, ConvertRGBAtoHex, stripRGBA,
+} from '../utils/colorUtils';
 
 interface IColoredBox {
   bgColor: string
@@ -36,7 +38,10 @@ export default function ThemePage() {
       text,
     },
   } = useMUITheme();
-  const { setCustomTheme } = useTheme();
+  const {
+    setCustomTheme,
+    dispatchColorBlendPercent,
+  } = useTheme();
   const [customPrimaryColor, setCustomPrimaryColor] = useState(primary.main);
   const [customSecondaryColor, setCustomSecondaryColor] = useState(secondary.main);
 
@@ -55,13 +60,23 @@ export default function ThemePage() {
       setCustomSecondaryColor(value);
     }, 100),
   ).current;
+  const debouncedColorBlendChange = useRef(
+    debounce((amount: number) => {
+      dispatchColorBlendPercent(amount);
+    }, 100),
+  ).current;
 
   useEffect(
     () => () => {
       debouncedPrimaryColorChange.cancel();
       debouncedSecondaryColorChange.cancel();
+      debouncedColorBlendChange.cancel();
     },
-    [debouncedPrimaryColorChange, debouncedSecondaryColorChange],
+    [
+      debouncedPrimaryColorChange,
+      debouncedSecondaryColorChange,
+      debouncedColorBlendChange,
+    ],
   );
 
   const handlePrimaryColorchange = (value:string) => {
@@ -70,6 +85,9 @@ export default function ThemePage() {
 
   const handleSecondaryColorchange = (value:string) => {
     debouncedSecondaryColorChange(value);
+  };
+  const handleColorBlendChange = (amount: number) => {
+    debouncedColorBlendChange(amount);
   };
 
   const handleSubmitCustomTheme = () => {
@@ -98,11 +116,9 @@ export default function ThemePage() {
   // TODO: Clean up / organize all of these grids and boxes
   return (
     <div>
-      <header>
-        <Typography variant="h3">
-          Theme Colors
-        </Typography>
-      </header>
+      <Typography component="header" variant="h3" sx={{ pt: 6, textAlign: 'center' }}>
+        Theme Colors
+      </Typography>
       <Paper sx={{ m: 3 }}>
         <Typography variant="h5">Current Theme</Typography>
         <Grid p={2} container>
@@ -220,6 +236,16 @@ export default function ThemePage() {
           <Button color="secondary" sx={{ m: 1 }} variant="contained" onClick={handleResetCustomColors}>
             Reset!
           </Button>
+        </Box>
+        <Box sx={{ m: 1, width: '45%' }}>
+          <Slider
+            aria-label="Color Blend Percentage"
+            step={BLEND_STEP}
+            marks
+            min={BLEND_PERCENT}
+            max={BLEND_PERCENT + (BLEND_STEP * 5)}
+            onChange={(e, value) => handleColorBlendChange(value as number)}
+          />
         </Box>
         <Grid p={2} container spacing={2}>
           {destructureColors(cPrimary).map((color) => {

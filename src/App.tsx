@@ -17,7 +17,7 @@ import ThemePage from './pages/themePage';
 
 function App() {
   return (
-    <Container style={{ paddingTop: '5em' }} maxWidth="xl" className="App">
+    <Container sx={{ pt: 15 }} maxWidth="xl" className="App">
       <CssBaseline />
       <Paper>
         <Router>

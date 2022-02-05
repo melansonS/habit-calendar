@@ -10,7 +10,12 @@ function baseDefaultBackground(isDarkMode: boolean) {
   return isDarkMode ? '#121212' : '#f9f9f9';
 }
 
-const buildTheme = (customTheme:Partial<ITheme> | null, themeName:string, isDarkMode: boolean) => {
+const buildTheme = (
+  customTheme:Partial<ITheme> | null,
+  themeName:string,
+  isDarkMode: boolean,
+  colorBlendPercent?: number,
+) => {
   const theme = createTheme({
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
@@ -22,11 +27,13 @@ const buildTheme = (customTheme:Partial<ITheme> | null, themeName:string, isDark
   const newPaper = simpleColorBlend(
     defaultPaper,
     theme.palette.primary[isDarkMode ? 'dark' : 'light'],
+    colorBlendPercent,
   );
   theme.palette.background.paper = newPaper;
   const newBackground = simpleColorBlend(
     baseDefaultBackground(isDarkMode),
     theme.palette.primary[isDarkMode ? 'dark' : 'main'],
+    colorBlendPercent,
   );
   theme.palette.background.default = newBackground;
   return theme;

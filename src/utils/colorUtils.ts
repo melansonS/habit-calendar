@@ -34,21 +34,26 @@ export function stripRGBA(s: string) {
   };
 }
 
+export const BLEND_PERCENT = 0.02;
+export const BLEND_STEP = 0.04;
+
 export function ConvertRGBAtoHex(r:number, g:number, b:number, a?: number):string {
   return `#${ColorToHex(r)}${ColorToHex(g)}${ColorToHex(b)}${a ? AlphaToHex(a) : ''}`;
 }
 
-export default function simpleColorBlend(c1 : string, c2 : string, percentage = 0.2) {
+export default function simpleColorBlend(c1 : string, c2 : string, percentage = BLEND_PERCENT) {
   const color1 = c1.includes('rgb') ? stripRGBA(c1) : HexToRGB(c1);
   const color2 = c2.includes('rgb') ? stripRGBA(c2) : HexToRGB(c2);
   const a = color1.a || color2.a;
+  let p = percentage;
+  if (p <= 0 || p >= 1) { p = 0.2; }
   const color3 = [
-    Math.round((1 - percentage) * color1.r + percentage * color2.r),
-    Math.round((1 - percentage) * color1.g + percentage * color2.g),
-    Math.round((1 - percentage) * color1.b + percentage * color2.b),
+    Math.round((1 - p) * color1.r + p * color2.r),
+    Math.round((1 - p) * color1.g + p * color2.g),
+    Math.round((1 - p) * color1.b + p * color2.b),
   ];
   if (a) {
-    color3[3] = color1.a && color2.a ? (1 - percentage) * color1.a + percentage * color2.a : a;
+    color3[3] = color1.a && color2.a ? (1 - p) * color1.a + percentage * color2.a : a;
   }
   return ConvertRGBAtoHex(color3[0], color3[1], color3[2], color3[3] || undefined);
 }
