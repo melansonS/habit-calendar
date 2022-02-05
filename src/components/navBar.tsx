@@ -14,10 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import pageList from '../utils/pageList';
 import DarkModeToggle from './darkModeToggle';
 import ThemeSelect from './ThemeSelector';
+import LoginButton from './loginButton';
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = useState<HTMLButtonElement | null>(null);
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorElNav(event?.currentTarget);
   };
@@ -85,6 +85,9 @@ function NavBar() {
           </Box>
           <Box pr={3}>
             <DarkModeToggle />
+          </Box>
+          <Box pr={3}>
+            <LoginButton />
           </Box>
         </Toolbar>
       </Container>

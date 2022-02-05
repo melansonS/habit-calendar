@@ -1,13 +1,12 @@
 import React from 'react';
 import './App.css';
-import CssBaseline from '@mui/material/CssBaseline';
-
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from 'react-router-dom';
 
+import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Paper } from '@mui/material';
 import NavBar from './components/navBar';
 import HomePage from './pages/homePage';
