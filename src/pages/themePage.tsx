@@ -67,11 +67,18 @@ export default function ThemePage() {
   const handlePrimaryColorchange = (value:string) => {
     debouncedPrimaryColorChange(value);
   };
+
   const handleSecondaryColorchange = (value:string) => {
     debouncedSecondaryColorChange(value);
   };
+
   const handleSubmitCustomTheme = () => {
     setCustomTheme({ primary: cPrimary, secondary: cSecondary });
+  };
+
+  const handleResetCustomColors = () => {
+    setCustomPrimaryColor(primary.main);
+    setCustomSecondaryColor(secondary.main);
   };
 
   const destructureColors = (colors: PaletteColor | TypeText| Color) => Object.keys(colors).map((color, index) => {
@@ -208,6 +215,9 @@ export default function ThemePage() {
           </Box>
           <Button sx={{ m: 1 }} variant="contained" onClick={handleSubmitCustomTheme}>
             Apply!
+          </Button>
+          <Button color="secondary" sx={{ m: 1 }} variant="contained" onClick={handleResetCustomColors}>
+            Reset!
           </Button>
         </Box>
         <Grid p={2} container spacing={2}>
