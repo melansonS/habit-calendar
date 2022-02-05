@@ -95,6 +95,7 @@ export default function ThemePage() {
     });
   });
 
+  // TODO: Clean up / organize all of these grids and boxes
   return (
     <div>
       <header>

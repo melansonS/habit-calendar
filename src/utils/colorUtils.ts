@@ -30,7 +30,7 @@ export function stripRGBA(s: string) {
     r: parseInt(r, 10),
     g: parseInt(g, 10),
     b: parseInt(b, 10),
-    a: a ? parseFloat(r) : undefined,
+    a: a ? parseFloat(a) : undefined,
   };
 }
 
@@ -41,7 +41,6 @@ export function ConvertRGBAtoHex(r:number, g:number, b:number, a?: number):strin
 export default function simpleColorBlend(c1 : string, c2 : string, percentage = 0.2) {
   const color1 = c1.includes('rgb') ? stripRGBA(c1) : HexToRGB(c1);
   const color2 = c2.includes('rgb') ? stripRGBA(c2) : HexToRGB(c2);
-  console.log(c1, c2, color1, color2);
   const a = color1.a || color2.a;
   const color3 = [
     Math.round((1 - percentage) * color1.r + percentage * color2.r),
