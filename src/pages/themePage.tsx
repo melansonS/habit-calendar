@@ -45,11 +45,15 @@ export default function ThemePage() {
   } = useTheme();
   const [customPrimaryColor, setCustomPrimaryColor] = useState(primary.main);
   const [customSecondaryColor, setCustomSecondaryColor] = useState(secondary.main);
-
   const { primary: cPrimary, secondary: cSecondary } = useMemo(() => createPalette({
     primary: { main: customPrimaryColor },
     secondary: { main: customSecondaryColor },
   }), [customPrimaryColor, customSecondaryColor]);
+
+  useEffect(() => {
+    setCustomPrimaryColor(primary.main);
+    setCustomSecondaryColor(secondary.main);
+  }, [primary, secondary]);
 
   const debouncedPrimaryColorChange = useRef(
     debounce((value: string) => {

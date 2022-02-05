@@ -36,7 +36,7 @@ export default function ColorPicker({ currentColor, handleChange, name }: IColor
     <Box sx={{ p: 1 }}>
       <StyledLabel currentColor={currentColor} htmlFor={`${name}-colorpicker`}>
         <CircleIcon fontSize="large" />
-        <StyledInput id={`${name}-colorpicker`} type="color" onChange={handleChange} />
+        <StyledInput value={currentColor} id={`${name}-colorpicker`} type="color" onChange={handleChange} />
       </StyledLabel>
     </Box>
   );

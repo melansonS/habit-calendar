@@ -17,8 +17,8 @@ export default function DarkModeToggle() {
       <ColoredFab
         onClick={toggleDarkMode}
         color="secondary"
-        $customColor={isDarkMode ? palette.secondary.dark : palette.secondary.light}
-        $customHoverColor={isDarkMode ? palette.secondary.main : palette.secondary.dark}
+        $customColor={!isDarkMode ? palette.secondary.main : palette.secondary.light}
+        $customHoverColor={!isDarkMode ? palette.secondary.light : palette.secondary.main}
       >
         {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
       </ColoredFab>
