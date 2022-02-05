@@ -2,7 +2,7 @@ import {
   blue, purple, green, red, indigo, orange, amber,
 } from '@mui/material/colors';
 
-import { ITheme } from '../utils/colorTypes';
+import { ITheme } from './colorTypes';
 
 const allThemes: {[key: string]: ITheme} = {
   RED: {

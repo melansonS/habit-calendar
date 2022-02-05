@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { TypeText } from '@mui/material/styles/createPalette';
 import createPalette from '@material-ui/core/styles/createPalette';
+import ColorPicker from '../components/colorPicker';
 import { useTheme } from '../context/themeContext';
 import { ConvertRGBAtoHex, stripRGBA } from '../utils/colorUtils';
 
@@ -75,7 +76,6 @@ export default function ThemePage() {
 
   const destructureColors = (colors: PaletteColor | TypeText| Color) => Object.keys(colors).map((color, index) => {
     let colorValue = Object.values(colors)[index];
-    // console.log('in desctruct col', typeof colors);
     if (colorValue.includes('rgb')) {
       const {
         r, g, b, a,
@@ -190,24 +190,23 @@ export default function ThemePage() {
       <Paper sx={{ m: 3 }}>
         <Typography variant="h5">created Theme...</Typography>
         <Box>
-          <Box>
-            <Typography>Primary</Typography>
-            <input
-              type="color"
-              value={customPrimaryColor}
-              onChange={(e) => handlePrimaryColorchange(e.target.value)}
+          <Box sx={{ pl: 2, display: 'flex', alignItems: 'center' }}>
+            <Typography variant="h6">Primary</Typography>
+            <ColorPicker
+              name="primary"
+              currentColor={customPrimaryColor}
+              handleChange={(e) => handlePrimaryColorchange(e.target.value)}
             />
           </Box>
-          <Box>
-            <Typography>Primary</Typography>
-            <input
+          <Box sx={{ pl: 2, display: 'flex', alignItems: 'center' }}>
+            <Typography variant="h6">Secondary</Typography>
+            <ColorPicker
               name="secondary"
-              type="color"
-              value={customSecondaryColor}
-              onChange={(e) => handleSecondaryColorchange(e.target.value)}
+              currentColor={customSecondaryColor}
+              handleChange={(e) => handleSecondaryColorchange(e.target.value)}
             />
           </Box>
-          <Button variant="contained" onClick={handleSubmitCustomTheme}>
+          <Button sx={{ m: 1 }} variant="contained" onClick={handleSubmitCustomTheme}>
             Apply!
           </Button>
         </Box>
