@@ -8,6 +8,7 @@ import {
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Paper } from '@mui/material';
+import ProtectedRoute from './components/protectedRoute';
 import NavBar from './components/navBar';
 import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
@@ -23,7 +24,8 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
+
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/theme" element={<ThemePage />} />
           </Routes>

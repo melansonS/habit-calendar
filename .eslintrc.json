@@ -41,6 +41,14 @@
             "depth": 3
           }]
     },
+    "overrides": [
+        {
+            "files": ["*.tsx"],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ],
     "settings": {
         "import/resolver": {
         "typescript": {}

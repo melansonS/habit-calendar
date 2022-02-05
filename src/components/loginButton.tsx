@@ -2,7 +2,7 @@ import React from 'react';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Fab } from '@mui/material';
+import { Fab, Tooltip } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export default function LoginButton() {
@@ -19,10 +19,12 @@ export default function LoginButton() {
   }
 
   return (
-    <Fab
-      onClick={() => handleClick()}
-    >
-      {isAuthenticated ? <LogoutIcon /> : <LoginIcon />}
-    </Fab>
+    <Tooltip title={isAuthenticated ? 'logout' : 'login'}>
+      <Fab
+        onClick={() => handleClick()}
+      >
+        {isAuthenticated ? <LogoutIcon /> : <LoginIcon />}
+      </Fab>
+    </Tooltip>
   );
 }
