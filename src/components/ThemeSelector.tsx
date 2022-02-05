@@ -12,11 +12,11 @@ import { useTheme } from '../context/themeContext';
 export default function ThemeSelect() {
   const {
     themeName,
-    setThemeName,
+    dispatchThemeName,
   } = useTheme();
   const handleChange = (event: SelectChangeEvent<ThemeNamesEnum>) => {
     if (Object.keys(ThemeNamesEnum).includes(event.target.value)) {
-      setThemeName(event.target.value as ThemeNamesEnum);
+      dispatchThemeName(event.target.value as ThemeNamesEnum);
     }
   };
   return (

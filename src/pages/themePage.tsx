@@ -1,6 +1,10 @@
-import React from 'react';
+import React, {
+  useState, useMemo, useRef, useEffect,
+} from 'react';
+import { debounce } from 'lodash';
 import {
   Box,
+  Button,
   Card,
   Color,
   Grid, PaletteColor,
@@ -8,7 +12,8 @@ import {
 } from '@mui/material';
 import { TypeText } from '@mui/material/styles/createPalette';
 import createPalette from '@material-ui/core/styles/createPalette';
-import { ConvertRGBAtoHex } from '../utils/colorUtils';
+import { useTheme } from '../context/themeContext';
+import { ConvertRGBAtoHex, stripRGBA } from '../utils/colorUtils';
 
 interface IColoredBox {
   bgColor: string
@@ -30,17 +35,52 @@ export default function ThemePage() {
       text,
     },
   } = useMUITheme();
+  const { setCustomTheme } = useTheme();
+  const [customPrimaryColor, setCustomPrimaryColor] = useState(primary.main);
+  const [customSecondaryColor, setCustomSecondaryColor] = useState(secondary.main);
 
-  const createdPalette = createPalette({
-    primary: { main: '#9e9858' },
-    secondary: { main: '#ffab00' },
-  });
+  const { primary: cPrimary, secondary: cSecondary } = useMemo(() => createPalette({
+    primary: { main: customPrimaryColor },
+    secondary: { main: customSecondaryColor },
+  }), [customPrimaryColor, customSecondaryColor]);
+
+  const debouncedPrimaryColorChange = useRef(
+    debounce((value: string) => {
+      setCustomPrimaryColor(value);
+    }, 100),
+  ).current;
+  const debouncedSecondaryColorChange = useRef(
+    debounce((value: string) => {
+      setCustomSecondaryColor(value);
+    }, 100),
+  ).current;
+
+  useEffect(
+    () => () => {
+      debouncedPrimaryColorChange.cancel();
+      debouncedSecondaryColorChange.cancel();
+    },
+    [debouncedPrimaryColorChange, debouncedSecondaryColorChange],
+  );
+
+  const handlePrimaryColorchange = (value:string) => {
+    debouncedPrimaryColorChange(value);
+  };
+  const handleSecondaryColorchange = (value:string) => {
+    debouncedSecondaryColorChange(value);
+  };
+  const handleSubmitCustomTheme = () => {
+    setCustomTheme({ primary: cPrimary, secondary: cSecondary });
+  };
 
   const destructureColors = (colors: PaletteColor | TypeText| Color) => Object.keys(colors).map((color, index) => {
     let colorValue = Object.values(colors)[index];
+    // console.log('in desctruct col', typeof colors);
     if (colorValue.includes('rgb')) {
-      const [r, g, b, a] = colorValue.slice(colorValue.indexOf('(') + 1, colorValue.indexOf(')')).split(', ');
-      colorValue = ConvertRGBAtoHex(parseInt(r, 10), parseInt(g, 10), parseInt(b, 10), a ? parseFloat(a) : undefined);
+      const {
+        r, g, b, a,
+      } = stripRGBA(colorValue);
+      colorValue = ConvertRGBAtoHex(r, g, b, a);
     }
     return ({
       name: color,
@@ -149,8 +189,30 @@ export default function ThemePage() {
       </Paper>
       <Paper sx={{ m: 3 }}>
         <Typography variant="h5">created Theme...</Typography>
+        <Box>
+          <Box>
+            <Typography>Primary</Typography>
+            <input
+              type="color"
+              value={customPrimaryColor}
+              onChange={(e) => handlePrimaryColorchange(e.target.value)}
+            />
+          </Box>
+          <Box>
+            <Typography>Primary</Typography>
+            <input
+              name="secondary"
+              type="color"
+              value={customSecondaryColor}
+              onChange={(e) => handleSecondaryColorchange(e.target.value)}
+            />
+          </Box>
+          <Button variant="contained" onClick={handleSubmitCustomTheme}>
+            Apply!
+          </Button>
+        </Box>
         <Grid p={2} container spacing={2}>
-          {destructureColors(createdPalette.primary).map((color) => {
+          {destructureColors(cPrimary).map((color) => {
             if (color.name === 'contrastText') {
               return null;
             }
@@ -171,7 +233,7 @@ export default function ThemePage() {
               </Grid>
             );
           })}
-          {destructureColors(createdPalette.secondary).map((color) => {
+          {destructureColors(cSecondary).map((color) => {
             if (color.name === 'contrastText') {
               return null;
             }

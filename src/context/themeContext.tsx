@@ -2,20 +2,25 @@ import React, { createContext, useMemo, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import allThemes from './themeColors';
 import simpleColorBlend from '../utils/colorUtils';
-import { ThemeNamesEnum } from '../utils/colorTypes';
+import { ITheme, ThemeNamesEnum } from '../utils/colorTypes';
 
 interface IThemeContext {
   themeName: ThemeNamesEnum;
-  setThemeName: React.Dispatch<React.SetStateAction<ThemeNamesEnum>>;
+  dispatchThemeName: React.Dispatch<React.SetStateAction<ThemeNamesEnum>>;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+  customTheme: Partial<ITheme> | null;
+  setCustomTheme: React.Dispatch<React.SetStateAction<Partial<ITheme> | null>>;
 }
 
 export const ThemeContext = createContext<IThemeContext>({
   themeName: ThemeNamesEnum.RED,
-  setThemeName: () => {},
+  dispatchThemeName: () => {},
+
   isDarkMode: false,
+  customTheme: null,
   toggleDarkMode: () => {},
+  setCustomTheme: () => {},
 });
 
 function basePaperBackground(isDarkMode: boolean) {
@@ -29,13 +34,15 @@ function baseDefaultBackground(isDarkMode: boolean) {
 export function ThemeContextProvider({ children } : {children: React.ReactNode}) {
   const [themeName, setThemeName] = useState<ThemeNamesEnum>(ThemeNamesEnum.INDIGO);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [customTheme, setCustomTheme] = useState<Partial<ITheme> | null>(null);
+
   const theme = useMemo(() => createTheme({
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
-      primary: allThemes[themeName].primary,
-      secondary: allThemes[themeName].secondary,
+      primary: customTheme ? customTheme.primary : allThemes[themeName].primary,
+      secondary: customTheme ? customTheme.secondary : allThemes[themeName].secondary,
     },
-  }), [isDarkMode, themeName]);
+  }), [isDarkMode, themeName, customTheme]);
 
   const defaultPaper = basePaperBackground(isDarkMode);
   const newPaper = simpleColorBlend(
@@ -50,15 +57,20 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
   );
   theme.palette.background.default = newBackground;
 
-  const themeMemo = useMemo(() => ({
+  const themeContextValue = useMemo(() => ({
     themeName,
-    setThemeName,
+    dispatchThemeName: (name: React.SetStateAction<ThemeNamesEnum>) => {
+      setCustomTheme(null);
+      setThemeName(name);
+    },
     toggleDarkMode: () => setIsDarkMode(!isDarkMode),
     isDarkMode,
-  }), [theme, isDarkMode]);
+    customTheme,
+    setCustomTheme,
+  }), [theme, isDarkMode, customTheme]);
 
   return (
-    <ThemeContext.Provider value={themeMemo}>
+    <ThemeContext.Provider value={themeContextValue}>
       <ThemeProvider theme={theme}>
         {children}
       </ThemeProvider>

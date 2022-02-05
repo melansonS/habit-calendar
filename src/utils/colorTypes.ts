@@ -20,9 +20,13 @@ export interface IColor {
   A200: string;
   A400: string;
   A700: string;
+  contrastText: string;
+  dark: string;
+  light: string;
+  main: string;
 }
 
 export interface ITheme {
-  primary: IColor;
-  secondary: IColor;
+  primary: Partial<IColor>;
+  secondary: Partial<IColor>;
 }
