@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 // using the MUI styled engine for styled-components
 // striping transient props with the shouldForwardProp styledConfig Option
 
-const transientConfig = {
+export const transientConfig = {
   shouldForwardProp: (prop : string | number | symbol) => typeof prop === 'string' && prop[0] !== '$',
 };
 
