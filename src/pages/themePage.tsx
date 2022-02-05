@@ -17,6 +17,7 @@ import { useTheme } from '../context/themeContext';
 import {
   BLEND_PERCENT, BLEND_STEP, ConvertRGBAtoHex, stripRGBA,
 } from '../utils/colorUtils';
+import ThemeSelect from '../components/ThemeSelector';
 
 interface IColoredBox {
   bgColor: string
@@ -121,6 +122,9 @@ export default function ThemePage() {
       </Typography>
       <Paper sx={{ m: 3 }}>
         <Typography variant="h5">Current Theme</Typography>
+        <Box p={2}>
+          <ThemeSelect />
+        </Box>
         <Grid p={2} container>
           <Grid item xs={12}>
             <Typography variant="h6">Primary</Typography>

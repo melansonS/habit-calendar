@@ -13,3 +13,33 @@ NODE SERVER ?
 
 APOLLO SERVER
   - is this even necessary... ?
+
+=========================
+
+  Reorg:
+  
+    - split up log in/out buttons [x]
+    - login calls back to /calendar automatically [x]
+
+    Homepage: 
+      - centered log in button on home page [x]
+      - Welcome banner [x]
+      - move random content to profile page [x]
+      - if logged in, redirect to calendar [x]
+    
+    Profile Page:
+      - move random content from homepage to profile page [x]
+
+    Calendar Page:
+      - is protected[x]
+
+    Theme Page:
+      - is protected[x]
+
+    nav bar:
+      - log out button when logged in [x]
+      - menu only when logged in [x]
+      - menu buttons entirely clickable [x]
+    
+    app:
+      - backdrop and spinner when logging in [x]

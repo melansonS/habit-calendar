@@ -1,30 +1,22 @@
 import React from 'react';
 import LoginIcon from '@mui/icons-material/Login';
-import LogoutIcon from '@mui/icons-material/Logout';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Fab, Tooltip } from '@mui/material';
+import { Button, Tooltip } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 
 export default function LoginButton() {
-  const {
-    loginWithRedirect, logout, isAuthenticated, isLoading,
-  } = useAuth0();
-  const handleClick = isAuthenticated ? logout : loginWithRedirect;
-  if (isLoading) {
-    return (
-      <Fab>
-        <CircularProgress size="20px" />
-      </Fab>
-    );
-  }
-
+  const { loginWithRedirect } = useAuth0();
   return (
-    <Tooltip title={isAuthenticated ? 'logout' : 'login'}>
-      <Fab
-        onClick={() => handleClick()}
+    <Tooltip title="login">
+      <Button
+        onClick={() => loginWithRedirect({
+          redirectUri: `${window.location.origin}/calendar`,
+        })}
+        color="secondary"
       >
-        {isAuthenticated ? <LogoutIcon /> : <LoginIcon />}
-      </Fab>
+        Jump in!
+        {' '}
+        <LoginIcon />
+      </Button>
     </Tooltip>
   );
 }

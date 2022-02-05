@@ -28,7 +28,7 @@ export const ThemeContext = createContext<IThemeContext>({
 });
 
 export function ThemeContextProvider({ children } : {children: React.ReactNode}) {
-  const [themeName, setThemeName] = useState<ThemeNamesEnum>(ThemeNamesEnum.INDIGO);
+  const [themeName, setThemeName] = useState<ThemeNamesEnum>(ThemeNamesEnum.FOUREST);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [customTheme, setCustomTheme] = useState<Partial<ITheme> | null>(null);
   const [colorBlendPercent, setColorBlendPercent] = useState<number>(BLEND_PERCENT);
