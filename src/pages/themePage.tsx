@@ -5,37 +5,26 @@ import { debounce } from 'lodash';
 import {
   Box,
   Button,
-  Card,
-  Color,
-  Grid, PaletteColor,
-  Paper, Slider, styled, Typography, useTheme as useMUITheme,
+  Grid,
+  Paper,
+  Slider,
+  Typography,
+  useTheme as useMUITheme,
 } from '@mui/material';
-import { TypeText } from '@mui/material/styles/createPalette';
 import createPalette from '@material-ui/core/styles/createPalette';
 import ColorPicker from '../components/colorPicker';
 import { useTheme } from '../context/themeContext';
 import {
-  BLEND_PERCENT, BLEND_STEP, ConvertRGBAtoHex, stripRGBA,
+  BLEND_PERCENT, BLEND_STEP, destructurePaletteColor,
 } from '../utils/colorUtils';
 import ThemeSelect from '../components/ThemeSelector';
-
-interface IColoredBox {
-  bgColor: string
-}
-
-const ColoredBox = styled(Box)((props: IColoredBox) => ({
-  backgroundColor: props.bgColor,
-  p: {
-    fontWeight: 'bold',
-  },
-}));
+import ColorDisplayGridItem from '../components/colorDisplayGridItem';
 
 export default function ThemePage() {
   const {
     palette: {
       primary,
       secondary,
-      grey,
       text,
     },
   } = useMUITheme();
@@ -104,20 +93,6 @@ export default function ThemePage() {
     setCustomSecondaryColor(secondary.main);
   };
 
-  const destructureColors = (colors: PaletteColor | TypeText| Color) => Object.keys(colors).map((color, index) => {
-    let colorValue = Object.values(colors)[index];
-    if (colorValue.includes('rgb')) {
-      const {
-        r, g, b, a,
-      } = stripRGBA(colorValue);
-      colorValue = ConvertRGBAtoHex(r, g, b, a);
-    }
-    return ({
-      name: color,
-      value: colorValue,
-    });
-  });
-
   // TODO: Clean up / organize all of these grids and boxes
   return (
     <div>
@@ -129,92 +104,39 @@ export default function ThemePage() {
         <Box p={2}>
           <ThemeSelect />
         </Box>
-        <Grid p={2} container>
+        <Grid p={2} container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h6">Primary</Typography>
           </Grid>
-          {destructureColors(primary).map((color) => {
-            if (color.name === 'contrastText') {
-              return null;
-            }
-            return (
-              <Grid key={`primary-${color?.name}-${color?.value}`} item xs={1}>
-                <Card>
-                  <ColoredBox sx={{ p: 2 }} bgColor={color?.value}>
-                    <Typography>
-                      {color?.value}
-                    </Typography>
-                  </ColoredBox>
-                  <Box>
-                    <Typography sx={{ textAlign: 'center' }}>
-                      {color?.name}
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-            );
-          })}
+          {destructurePaletteColor(primary).map((color) => (
+            <ColorDisplayGridItem
+              key={`primary-${color?.name}-${color?.value}`}
+              color={color}
+              xs={4}
+              md={2}
+            />
+          ))}
           <Grid item xs={12}>
             <Typography variant="h6">Secondary</Typography>
           </Grid>
-          {destructureColors(secondary).map((color) => {
-            if (color.name === 'contrastText') {
-              return null;
-            }
-            return (
-              <Grid key={`secondary-${color?.name}-${color?.value}`} item xs={1}>
-                <Card>
-                  <ColoredBox sx={{ p: 2 }} bgColor={color?.value}>
-                    <Typography>
-                      {color?.value}
-                    </Typography>
-                  </ColoredBox>
-                  <Box>
-                    <Typography sx={{ textAlign: 'center' }}>
-                      {color?.name}
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-            );
-          })}
-          <Grid item xs={12}>
-            <Typography variant="h6">Grey</Typography>
-          </Grid>
-          {destructureColors(grey).map((color) => (
-            <Grid key={`grey-${color?.name}-${color?.value}`} item xs={1}>
-              <Card>
-                <ColoredBox sx={{ p: 2 }} bgColor={color?.value}>
-                  <Typography>
-                    {color?.value}
-                  </Typography>
-                </ColoredBox>
-                <Box>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    {color?.name}
-                  </Typography>
-                </Box>
-              </Card>
-            </Grid>
+          {destructurePaletteColor(secondary).map((color) => (
+            <ColorDisplayGridItem
+              key={`primary-${color?.name}-${color?.value}`}
+              color={color}
+              xs={4}
+              md={2}
+            />
           ))}
           <Grid item xs={12}>
             <Typography variant="h6">text</Typography>
           </Grid>
-          {destructureColors(text).map((color) => (
-            <Grid key={`text-${color?.name}-${color?.value}`} item xs={1}>
-              <Card>
-                <ColoredBox sx={{ p: 2 }} bgColor={color?.value}>
-                  <Typography>
-                    {color?.value}
-                  </Typography>
-                </ColoredBox>
-                <Box>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    {color?.name}
-                  </Typography>
-                </Box>
-              </Card>
-            </Grid>
+          {destructurePaletteColor(text).map((color) => (
+            <ColorDisplayGridItem
+              key={`primary-${color?.name}-${color?.value}`}
+              color={color}
+              xs={4}
+              md={2}
+            />
           ))}
 
         </Grid>
@@ -256,48 +178,22 @@ export default function ThemePage() {
           />
         </Box>
         <Grid p={2} container spacing={2}>
-          {destructureColors(cPrimary).map((color) => {
-            if (color.name === 'contrastText') {
-              return null;
-            }
-            return (
-              <Grid key={`createdPalette-primary-${color?.name}-${color?.value}`} item xs={1}>
-                <Card>
-                  <ColoredBox sx={{ p: 2 }} bgColor={color?.value}>
-                    <Typography>
-                      {color?.value}
-                    </Typography>
-                  </ColoredBox>
-                  <Box>
-                    <Typography sx={{ textAlign: 'center' }}>
-                      {color?.name}
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-            );
-          })}
-          {destructureColors(cSecondary).map((color) => {
-            if (color.name === 'contrastText') {
-              return null;
-            }
-            return (
-              <Grid key={`createdPalette-secondary-${color?.name}-${color?.value}`} item xs={1}>
-                <Card>
-                  <ColoredBox sx={{ p: 2 }} bgColor={color?.value}>
-                    <Typography>
-                      {color?.value}
-                    </Typography>
-                  </ColoredBox>
-                  <Box>
-                    <Typography sx={{ textAlign: 'center' }}>
-                      {color?.name}
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-            );
-          })}
+          {destructurePaletteColor(cPrimary).map((color) => (
+            <ColorDisplayGridItem
+              key={`primary-${color?.name}-${color?.value}`}
+              color={color}
+              xs={4}
+              md={2}
+            />
+          ))}
+          {destructurePaletteColor(cSecondary).map((color) => (
+            <ColorDisplayGridItem
+              key={`primary-${color?.name}-${color?.value}`}
+              color={color}
+              xs={4}
+              md={2}
+            />
+          ))}
         </Grid>
       </Paper>
     </div>

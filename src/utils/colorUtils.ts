@@ -1,3 +1,6 @@
+import { PaletteColor, Color } from '@mui/material';
+import { TypeText } from '@mui/material/styles/createPalette';
+
 function ColorToHex(color:number): string {
   const hexadecimal = color.toString(16);
   return hexadecimal.length === 1 ? `0${hexadecimal}` : hexadecimal;
@@ -57,3 +60,19 @@ export default function simpleColorBlend(c1 : string, c2 : string, percentage = 
   }
   return ConvertRGBAtoHex(color3[0], color3[1], color3[2], color3[3] || undefined);
 }
+
+const USEFULCOLORS = ['main', 'light', 'dark', 'primary', 'secondary', 'disabled'];
+export const destructurePaletteColor = (colors: PaletteColor | TypeText| Color) => Object.keys(colors)
+  .map((color, index) => {
+    let colorValue = Object.values(colors)[index];
+    if (colorValue.includes('rgb')) {
+      const {
+        r, g, b, a,
+      } = stripRGBA(colorValue);
+      colorValue = ConvertRGBAtoHex(r, g, b, a);
+    }
+    return ({
+      name: color,
+      value: colorValue,
+    });
+  }).filter((color) => USEFULCOLORS.includes(color.name));
