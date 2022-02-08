@@ -4,6 +4,8 @@ import {
   Card, Paper, Typography, Skeleton,
 } from '@mui/material';
 
+import Calendar from '../components/calendar';
+
 export default function CalendarPage() {
   const { isLoading, user } = useAuth0();
   if (user?.given_name) {
@@ -22,6 +24,7 @@ export default function CalendarPage() {
             <Typography>
               {`Welcome ${user?.given_name || user?.nickname}`}
             </Typography>
+            <Calendar />
           </Paper>
         )}
     </Card>
