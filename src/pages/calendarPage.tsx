@@ -4,10 +4,12 @@ import {
   Card, Paper, Typography, Skeleton,
 } from '@mui/material';
 
-import Calendar from '../components/calendar';
+import Calendar from '../components/calendar/calendar';
+import { useTheme } from '../context/themeContext';
 
 export default function CalendarPage() {
   const { isLoading, user } = useAuth0();
+  const { isDarkMode } = useTheme();
   if (user?.given_name) {
     user.given_name = '';
   }
@@ -24,7 +26,7 @@ export default function CalendarPage() {
             <Typography>
               {`Welcome ${user?.given_name || user?.nickname}`}
             </Typography>
-            <Calendar />
+            <Calendar isDarkMode={isDarkMode} />
           </Paper>
         )}
     </Card>

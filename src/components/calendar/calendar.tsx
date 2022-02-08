@@ -1,15 +1,20 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
-import './calendar.css';
+// import './calendar.css';
 import {
   format, addMonths, subMonths, addDays, startOfWeek,
   endOfWeek,
   endOfMonth, startOfMonth,
   startOfDay,
 } from 'date-fns';
+import Cells from './cells';
 
-export default function Calendar() {
+interface ICalendarProps {
+  isDarkMode: boolean
+}
+
+export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const today = startOfDay(new Date());
   // const [selectedDate, setSelectedDate] = useState(new Date());
@@ -107,7 +112,8 @@ export default function Calendar() {
     return <div className="body">{rows}</div>;
   };
   return (
-    <div className="calendar">
+    <div>
+      <Cells currentMonth={currentMonth} today={today} isDarkMode={isDarkMode} />
       {renderHeader()}
       {renderDays()}
       {renderCells()}
