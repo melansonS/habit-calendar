@@ -62,7 +62,6 @@ export default function Cells({ currentMonth, today, isDarkMode }: ICellsProps) 
       <Row
         sx={{
           display: 'grid',
-          gap: 1,
           gridTemplateColumns: 'repeat(7, 1fr)',
         }}
         key={`key-${day.getDate()}-${j}`}

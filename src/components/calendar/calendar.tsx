@@ -9,6 +9,7 @@ import {
   startOfDay,
 } from 'date-fns';
 import Cells from './cells';
+import Days from './days';
 
 interface ICalendarProps {
   isDarkMode: boolean
@@ -52,7 +53,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const renderDays = () => {
-    const dateFormat = 'dddd';
+    const dateFormat = 'EEEE';
     const days = [];
 
     const startDate = startOfWeek(currentMonth);
@@ -113,6 +114,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
   return (
     <div>
+      <Days currentMonth={currentMonth} isDarkMode={isDarkMode} />
       <Cells currentMonth={currentMonth} today={today} isDarkMode={isDarkMode} />
       {renderHeader()}
       {renderDays()}
