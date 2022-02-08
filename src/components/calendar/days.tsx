@@ -36,7 +36,8 @@ export default function Cells({ currentMonth, isDarkMode }: IDaysProps) {
         gap: 1,
         gridTemplateColumns: 'repeat(7, 1fr)',
       }}
-      p={2}
+      pt={2}
+      pb={2}
     >
       {days}
     </Box>

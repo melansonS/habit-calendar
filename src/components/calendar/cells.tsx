@@ -5,7 +5,7 @@ import {
   endOfMonth, startOfMonth,
 } from 'date-fns';
 import {
-  styled, Box, Typography, Paper,
+  styled, Box, Typography,
 } from '@mui/material';
 
 interface ICellsProps {
@@ -14,7 +14,7 @@ interface ICellsProps {
   isDarkMode: boolean
 }
 
-const CellsContainer = styled(Paper)`
+const CellsContainer = styled(Box)`
 `;
 
 const Row = styled(Box)`
@@ -73,5 +73,5 @@ export default function Cells({ currentMonth, today, isDarkMode }: ICellsProps) 
     j += 1;
   }
 
-  return <CellsContainer elevation={6}>{rows}</CellsContainer>;
+  return <CellsContainer>{rows}</CellsContainer>;
 }
