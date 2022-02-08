@@ -6,10 +6,12 @@ import {
   format, addMonths, subMonths, addDays, startOfWeek,
   endOfWeek,
   endOfMonth, startOfMonth,
+  startOfDay,
 } from 'date-fns';
 
 export default function Calendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const today = startOfDay(new Date());
   // const [selectedDate, setSelectedDate] = useState(new Date());
 
   // const onDateClick = (day: any) => {
@@ -84,7 +86,11 @@ export default function Calendar() {
             key={`${day.getDate()}-key?`}
             // onClick={() => onDateClick(parse(cloneDay, 'yyyy-MM-dd', new Date()))}
           >
-            <span className="number">{formattedDate}</span>
+            <span className="number">
+              {formattedDate}
+            </span>
+            {today.getTime() === day.getTime() && <span>today??</span>}
+
             <span className="bg">{formattedDate}</span>
           </div>,
         );
