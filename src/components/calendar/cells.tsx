@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  format, addDays, startOfWeek,
+  format,
+  startOfWeek,
   endOfWeek,
-  endOfMonth, startOfMonth,
+  endOfMonth, startOfMonth, eachDayOfInterval, getMonth,
 } from 'date-fns';
 import {
   styled, Box, Typography,
@@ -26,9 +27,6 @@ interface ICellProps {
 const CellsContainer = styled(Box)`
 `;
 
-const Row = styled(Box)`
-`;
-
 const Cell = styled(Box)`
   height: 5rem;
   position: relative;
@@ -45,67 +43,68 @@ export default function Cells({ currentMonth, today, isDarkMode }: ICellsProps) 
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
-
-  const checkedDays = ['1643518800000', '1643518800000', '1643778000000', '1643864400000', today.getTime().toString()];
-
-  const dateFormat = 'd';
-  const rows = [];
-  let days = [];
-  let day = startDate;
-  let formattedDate = '';
-  let j = 0;
   const currentMonthIndex = currentMonth.getMonth();
 
-  while (day <= endDate) {
-    for (let i = 0; i < 7; i += 1) {
-      formattedDate = format(day, dateFormat);
-      if (currentMonthIndex !== day.getMonth()) {
-        days.push(
-          <Box
-            style={{
-              height: '5rem',
-              position: 'relative',
-              backgroundColor: grey[200],
-            }}
-            key={`${day.getDate()}-out-of-month`}
-          >
-            <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
-              {formattedDate}
-            </Typography>
-          </Box>,
-        );
-      } else {
-        days.push(
-          <Cell
-            primary={primary.main}
-            secondary={secondary.main}
-            isChecked={checkedDays.includes(day.getTime().toString())}
-            isDarkMode={isDarkMode}
-            isToday={today.getTime() === day.getTime()}
-            key={`${day.getDate()}-key?`}
-          >
-            <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
-              {formattedDate}
-            </Typography>
-          </Cell>,
-        );
-      }
-      day = addDays(day, 1);
-    }
-    rows.push(
-      <Row
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
-        }}
-        key={`key-${day.getDate()}-${j}`}
-      >
-        {days}
-      </Row>,
-    );
-    days = [];
-    j += 1;
-  }
+  const [checkedDays, setCheckedDays] = useState([1643778000000, 1643864400000]);
 
-  return <CellsContainer>{rows}</CellsContainer>;
+  const handleCellClick = (day: number) => {
+    if (checkedDays.includes(day)) {
+      setCheckedDays(checkedDays.filter((d :number) => d !== day));
+    } else {
+      setCheckedDays([...checkedDays, day]);
+    }
+  };
+
+  // TODO: memoize the array of Cell Nodes?
+  const allDatesOfMonth = eachDayOfInterval({ start: startDate, end: endDate });
+  const allDayTimesOfMonth = allDatesOfMonth.map((date) => date.getTime());
+  const dayCells = allDayTimesOfMonth.map((day, index) => {
+    const dateFormat = 'd';
+    const formattedDate = format(day, dateFormat);
+
+    if (currentMonthIndex !== getMonth(day)) {
+      return (
+        <Box
+          style={{
+            height: '5rem',
+            position: 'relative',
+            backgroundColor: grey[200],
+          }}
+          key={`col-${index % 7}-${day}-out-of-month`}
+        >
+          <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+            {formattedDate}
+          </Typography>
+        </Box>
+      );
+    }
+    return (
+      <Cell
+        primary={primary.main}
+        secondary={secondary.main}
+        isChecked={checkedDays.includes(day)}
+        isDarkMode={isDarkMode}
+        isToday={today.getTime() === day}
+        key={`col-${index % 7}-${day}`}
+        onClick={() => handleCellClick(day)}
+      >
+        <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+          {formattedDate}
+        </Typography>
+      </Cell>
+    );
+  });
+
+  return (
+    <CellsContainer>
+      <Box sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(7, 1fr)',
+      }}
+      >
+        {dayCells}
+
+      </Box>
+    </CellsContainer>
+  );
 }
