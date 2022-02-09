@@ -40,7 +40,7 @@ const Cell = styled(Box)`
 `;
 
 export default function Cells({ currentMonth, today, isDarkMode }: ICellsProps) {
-  const { palette: { primary, secondary } } = useMUITheme();
+  const { palette: { primary, secondary, grey } } = useMUITheme();
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -54,23 +54,42 @@ export default function Cells({ currentMonth, today, isDarkMode }: ICellsProps) 
   let day = startDate;
   let formattedDate = '';
   let j = 0;
+  const currentMonthIndex = currentMonth.getMonth();
+
   while (day <= endDate) {
     for (let i = 0; i < 7; i += 1) {
       formattedDate = format(day, dateFormat);
-      days.push(
-        <Cell
-          primary={primary.main}
-          secondary={secondary.main}
-          isChecked={checkedDays.includes(day.getTime().toString())}
-          isDarkMode={isDarkMode}
-          isToday={today.getTime() === day.getTime()}
-          key={`${day.getDate()}-key?`}
-        >
-          <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
-            {formattedDate}
-          </Typography>
-        </Cell>,
-      );
+      if (currentMonthIndex !== day.getMonth()) {
+        days.push(
+          <Box
+            style={{
+              height: '5rem',
+              position: 'relative',
+              backgroundColor: grey[200],
+            }}
+            key={`${day.getDate()}-out-of-month`}
+          >
+            <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+              {formattedDate}
+            </Typography>
+          </Box>,
+        );
+      } else {
+        days.push(
+          <Cell
+            primary={primary.main}
+            secondary={secondary.main}
+            isChecked={checkedDays.includes(day.getTime().toString())}
+            isDarkMode={isDarkMode}
+            isToday={today.getTime() === day.getTime()}
+            key={`${day.getDate()}-key?`}
+          >
+            <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+              {formattedDate}
+            </Typography>
+          </Cell>,
+        );
+      }
       day = addDays(day, 1);
     }
     rows.push(
