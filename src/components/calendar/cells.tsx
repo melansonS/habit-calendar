@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   format,
   startOfWeek,
@@ -14,6 +14,8 @@ interface ICellsProps {
   currentMonth: Date
   today: Date
   isDarkMode: boolean
+  checkedDays: number[]
+  handleCellClick: (day: number) => void
 }
 
 interface ICellProps {
@@ -37,23 +39,17 @@ const Cell = styled(Box)`
   }
 `;
 
-export default function Cells({ currentMonth, today, isDarkMode }: ICellsProps) {
+export default function Cells({
+  currentMonth, today, isDarkMode,
+  checkedDays,
+  handleCellClick,
+}: ICellsProps) {
   const { palette: { primary, secondary, grey } } = useMUITheme();
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
   const currentMonthIndex = currentMonth.getMonth();
-
-  const [checkedDays, setCheckedDays] = useState([1643778000000, 1643864400000]);
-
-  const handleCellClick = (day: number) => {
-    if (checkedDays.includes(day)) {
-      setCheckedDays(checkedDays.filter((d :number) => d !== day));
-    } else {
-      setCheckedDays([...checkedDays, day]);
-    }
-  };
 
   // TODO: memoize the array of Cell Nodes?
   const allDatesOfMonth = eachDayOfInterval({ start: startDate, end: endDate });

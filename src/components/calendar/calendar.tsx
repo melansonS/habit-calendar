@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   format, addMonths, subMonths,
   startOfDay,
+  getMonth,
+  getYear,
 } from 'date-fns';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -14,10 +16,49 @@ import Days from './days';
 interface ICalendarProps {
   isDarkMode: boolean
 }
+interface IUser {
+  name: string
+  checkedDays: {[name: string]: number[]}
+}
 
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [user, setUser] = useState<IUser | null>(null);
   const today = startOfDay(new Date());
+
+  useEffect(() => {
+    const mockUser: IUser = {
+      name: 'tom',
+      checkedDays: {
+        202111: [1639198800000],
+        20221: [1643778000000, 1643864400000],
+      },
+    };
+    setUser(mockUser);
+  }, []);
+
+  const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
+
+  const handleCellClick = (day: number) => {
+    if (!user) return;
+    console.log(yearMonth, day);
+    const checkedDays = user?.checkedDays[yearMonth];
+    if (checkedDays?.includes(day)) {
+      setUser({
+        ...user,
+        checkedDays: {
+          ...user.checkedDays,
+          [yearMonth]: checkedDays.filter((d:number) => d !== day),
+        },
+      });
+    } else {
+      setUser({
+        ...user,
+        checkedDays: { ...user.checkedDays, [yearMonth]: [...checkedDays, day] },
+      });
+    }
+  };
+
   const nextMonth = () => {
     setCurrentMonth(addMonths(currentMonth, 1));
   };
@@ -47,7 +88,13 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         </Box>
       </Box>
       <Days currentMonth={currentMonth} isDarkMode={isDarkMode} />
-      <Cells currentMonth={currentMonth} today={today} isDarkMode={isDarkMode} />
+      <Cells
+        checkedDays={user?.checkedDays[yearMonth] || []}
+        currentMonth={currentMonth}
+        today={today}
+        isDarkMode={isDarkMode}
+        handleCellClick={handleCellClick}
+      />
     </Paper>
   );
 }
