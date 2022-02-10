@@ -9,6 +9,7 @@ import {
   styled, Box, Typography,
   useTheme as useMUITheme,
 } from '@mui/material';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 interface ICellsProps {
   currentMonth: Date
@@ -33,6 +34,7 @@ const Cell = styled(Box)`
   height: 5rem;
   position: relative;
   background-color: ${({ isChecked, primary }:ICellProps) => (isChecked ? primary : 'inherit')};
+  opacity: ${({ isChecked }:ICellProps) => (isChecked ? '0.5' : 'inherit')};
   border: ${({ isToday, secondary } :ICellProps) => (isToday ? `2px solid ${secondary}` : 'none')};
   :hover {
     background-color: ${({ isDarkMode }:ICellProps) => (isDarkMode ? '#333' : '#eee')};
@@ -84,6 +86,12 @@ export default function Cells({
         key={`col-${index % 7}-${day}`}
         onClick={() => handleCellClick(day)}
       >
+        {checkedDays.includes(day) && (
+        <CheckCircleOutlinedIcon
+          color="secondary"
+          fontSize="large"
+        />
+        )}
         <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
           {formattedDate}
         </Typography>
