@@ -17,6 +17,18 @@ const buildTheme = (
   colorBlendPercent?: number,
 ) => {
   const theme = createTheme({
+    typography: {
+      fontFamily: 'Open Sans',
+    },
+    components: {
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            transition: 'background-color .5s ease-out',
+          },
+        },
+      },
+    },
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
       primary: customTheme ? customTheme.primary : allThemes[themeName].primary,
