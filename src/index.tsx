@@ -11,6 +11,8 @@ ReactDOM.render(
       domain="dev-yjll6etc.us.auth0.com"
       clientId="OhtrXOukQ9lk89dTkAuALWAOuRkxM3Rr"
       redirectUri={window.location.origin}
+      audience="hcAuth"
+      scope="read:current_user"
     >
       <ThemeContextProvider>
         <App />

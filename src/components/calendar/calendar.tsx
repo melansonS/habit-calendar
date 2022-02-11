@@ -24,7 +24,18 @@ interface IUser {
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [user, setUser] = useState<IUser | null>(null);
+  const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
   const today = startOfDay(new Date());
+  const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
+
+  useEffect(() => {
+    if (!user) return;
+    const todayAsNumber = today.getTime();
+    const checkedDays = user?.checkedDays[yearMonth];
+    if (checkedDays?.includes(todayAsNumber)) {
+      setIsTodayChecked(true);
+    }
+  }, []);
 
   useEffect(() => {
     const mockUser: IUser = {
@@ -37,7 +48,27 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
     setUser(mockUser);
   }, []);
 
-  const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
+  const handleToggleToday = () => {
+    if (!user) return;
+    const todayAsNumber = today.getTime();
+    const checkedDays = user?.checkedDays[yearMonth];
+    if (checkedDays?.includes(todayAsNumber)) {
+      setUser({
+        ...user,
+        checkedDays: {
+          ...user.checkedDays,
+          [yearMonth]: checkedDays.filter((d:number) => d !== todayAsNumber),
+        },
+      });
+      setIsTodayChecked(false);
+    } else {
+      setUser({
+        ...user,
+        checkedDays: { ...user.checkedDays, [yearMonth]: [...checkedDays, todayAsNumber] },
+      });
+      setIsTodayChecked(true);
+    }
+  };
 
   const handleCellClick = (day: number) => {
     if (!user) return;
@@ -95,6 +126,13 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         isDarkMode={isDarkMode}
         handleCellClick={handleCellClick}
       />
+      <Box pt={2}>
+        <Typography align="center" variant="h6">
+          Mark today as
+          {' '}
+          <Button variant="outlined" onClick={handleToggleToday}>{isTodayChecked ? 'not Completed..' : 'Complete!'}</Button>
+        </Typography>
+      </Box>
     </Paper>
   );
 }

@@ -18,9 +18,7 @@ function NavBar() {
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
 
           <Box sx={{ width: '33%', display: { xs: 'flex' } }}>
-            {isAuthenticated && (
-            <NavMenu />
-            )}
+            {isAuthenticated && (<NavMenu />)}
           </Box>
 
           <Box sx={{

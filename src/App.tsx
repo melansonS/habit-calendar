@@ -27,11 +27,11 @@ function App() {
     const getToken = async () => {
       if (isAuthenticated) {
         const accessToken = await getAccessTokenSilently({
-          audience: 'https://dev-yjll6etc.us.auth0.com/api/v2/',
+          audience: 'hcAuth',
           scope: 'read:current_user',
         });
         console.log({ accessToken });
-        // const res = await fetch('http://localhost:4040', {
+        // const res = await fetch('http://localhost:8080/private', {
         //   headers: {
         //     Authorization: `Bearer ${accessToken}`,
         //   },
