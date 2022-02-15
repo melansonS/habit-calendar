@@ -1,8 +1,8 @@
 AUTH
-  - Auth0 set up
-    - Sign Up
-    - Tennet
-    - Auth Client
+  - Auth0 set up [x]
+    - Sign Up [x]
+    - Tennet [x]
+    - Auth Client [x]
 
 COLORS
   - find a white []
@@ -13,6 +13,8 @@ NODE SERVER ?
 
 APOLLO SERVER
   - is this even necessary... ?
+
+Persist theme data in local storage as well as on the user...
 
 =========================
 
