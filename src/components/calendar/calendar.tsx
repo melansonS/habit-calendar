@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Cells from './cells';
 import Days from './days';
-import { IUser, useUser } from '../../context/userContext';
+import { useUser } from '../../context/userContext';
 
 interface ICalendarProps {
   isDarkMode: boolean
@@ -20,14 +20,24 @@ interface ICalendarProps {
 
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [user, setUser] = useState<IUser | undefined>();
+  // const [user, setUser] = useState<IUser | undefined>();
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
   const today = startOfDay(new Date());
   const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
-  const userContext = useUser();
+  const [totalDays, setTotalDays] = useState<number>(0);
+  const { user, setUser } = useUser();
   useEffect(() => {
-    setUser(userContext);
-  }, [userContext]);
+    if (user?.checkedDays) {
+      const reducedCheckedDays:number = Object.keys(user.checkedDays)
+        .reduce((prev: any, curr: any) => {
+          if (user.checkedDays && user?.checkedDays[curr]) {
+            return prev + user.checkedDays[curr].length;
+          }
+          return prev;
+        }, 0);
+      setTotalDays(reducedCheckedDays);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!user || !user.checkedDays) return;
@@ -125,8 +135,10 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
             onClick={handleToggleToday}
           >
             {isTodayChecked ? 'not Completed..' : 'Complete!'}
-
           </Button>
+        </Typography>
+        <Typography>
+          {`you've been at it for ${totalDays} day${totalDays !== 1 ? 's' : ''}!`}
         </Typography>
       </Box>
     </Paper>
