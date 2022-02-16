@@ -62,7 +62,7 @@ export default function Cells({
   checkedDays,
   handleCellClick,
 }: ICellsProps) {
-  const { palette: { primary, secondary, grey } } = useMUITheme();
+  const { palette: { primary, secondary } } = useMUITheme();
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -82,14 +82,9 @@ export default function Cells({
           style={{
             height: '5rem',
             position: 'relative',
-            backgroundColor: grey[200],
           }}
           key={`col-${index % 7}-${day}-out-of-month`}
-        >
-          <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
-            {formattedDate}
-          </Typography>
-        </Box>
+        />
       );
     }
     return (

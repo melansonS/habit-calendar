@@ -4,6 +4,7 @@ import './index.css';
 import { Auth0Provider } from '@auth0/auth0-react';
 import App from './App';
 import { ThemeContextProvider } from './context/themeContext';
+import { UserContextProvider } from './context/userContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.render(
       scope="read:current_user"
     >
       <ThemeContextProvider>
-        <App />
+        <UserContextProvider>
+          <App />
+        </UserContextProvider>
       </ThemeContextProvider>
     </Auth0Provider>
   </React.StrictMode>,

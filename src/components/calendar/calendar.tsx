@@ -12,24 +12,25 @@ import {
 } from '@mui/material';
 import Cells from './cells';
 import Days from './days';
+import { IUser, useUser } from '../../context/userContext';
 
 interface ICalendarProps {
   isDarkMode: boolean
 }
-interface IUser {
-  name: string
-  checkedDays: {[name: string]: number[]}
-}
 
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser | undefined>();
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
   const today = startOfDay(new Date());
   const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
+  const userContext = useUser();
+  useEffect(() => {
+    setUser(userContext);
+  }, [userContext]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !user.checkedDays) return;
     const todayAsNumber = today.getTime();
     const checkedDays = user?.checkedDays[yearMonth];
     if (checkedDays?.includes(todayAsNumber)) {
@@ -37,19 +38,8 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
     }
   }, []);
 
-  useEffect(() => {
-    const mockUser: IUser = {
-      name: 'tom',
-      checkedDays: {
-        202111: [1639198800000],
-        20221: [1643778000000, 1643864400000],
-      },
-    };
-    setUser(mockUser);
-  }, []);
-
   const handleToggleToday = () => {
-    if (!user) return;
+    if (!user || !user.checkedDays) return;
     const todayAsNumber = today.getTime();
     const checkedDays = user?.checkedDays[yearMonth];
     if (checkedDays?.includes(todayAsNumber)) {
@@ -71,7 +61,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const handleCellClick = (day: number) => {
-    if (!user) return;
+    if (!user || !user.checkedDays) return;
     console.log(yearMonth, day);
     const checkedDays = user?.checkedDays[yearMonth];
     if (checkedDays?.includes(day)) {
@@ -120,7 +110,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
       </Box>
       <Days currentMonth={currentMonth} isDarkMode={isDarkMode} />
       <Cells
-        checkedDays={user?.checkedDays[yearMonth] || []}
+        checkedDays={user?.checkedDays && user.checkedDays[yearMonth] ? user.checkedDays[yearMonth] : []}
         currentMonth={currentMonth}
         today={today}
         isDarkMode={isDarkMode}
@@ -130,7 +120,13 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         <Typography align="center" variant="h6">
           Mark today as
           {' '}
-          <Button variant="outlined" onClick={handleToggleToday}>{isTodayChecked ? 'not Completed..' : 'Complete!'}</Button>
+          <Button
+            variant="outlined"
+            onClick={handleToggleToday}
+          >
+            {isTodayChecked ? 'not Completed..' : 'Complete!'}
+
+          </Button>
         </Typography>
       </Box>
     </Paper>

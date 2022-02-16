@@ -1,8 +1,17 @@
+CALENDAR 
+  - style days out of current month []
+  - set up hover interaction []
+  - set up streak ui []
+  - set up total days checked []
+  - set up days out of current month ?? [] 
+ 
 AUTH
   - Auth0 set up [x]
     - Sign Up [x]
     - Tennet [x]
     - Auth Client [x]
+  - pull in user data on log in []
+    - store antyhign in local storage? []
 
 COLORS
   - find a white []

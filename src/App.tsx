@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -22,26 +22,7 @@ import CalendarPage from './pages/calendarPage';
 import ThemePage from './pages/themePage';
 
 function App() {
-  const { isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  useEffect(() => {
-    const getToken = async () => {
-      if (isAuthenticated) {
-        const accessToken = await getAccessTokenSilently({
-          audience: 'hcAuth',
-          scope: 'read:current_user',
-        });
-        console.log({ accessToken });
-        // const res = await fetch('http://localhost:8080/private', {
-        //   headers: {
-        //     Authorization: `Bearer ${accessToken}`,
-        //   },
-        // });
-        // const json = await res.json();
-        // console.log(json);
-      }
-    };
-    getToken();
-  }, [isAuthenticated]);
+  const { isLoading } = useAuth0();
   return (
     <Container sx={{ pt: 15 }} maxWidth="xl" className="App">
       <CssBaseline />
