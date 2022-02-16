@@ -51,20 +51,31 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   const handleToggleToday = () => {
     if (!user || !user.checkedDays) return;
     const todayAsNumber = today.getTime();
-    const checkedDays = user?.checkedDays[yearMonth];
+    const currentYearMonth = `${getYear(today)}${getMonth(today)}`;
+    const checkedDays = user?.checkedDays[currentYearMonth];
+    if (!checkedDays) {
+      setUser({
+        ...user,
+        checkedDays: {
+          ...user.checkedDays,
+          [currentYearMonth]: [todayAsNumber],
+        },
+      });
+      return;
+    }
     if (checkedDays?.includes(todayAsNumber)) {
       setUser({
         ...user,
         checkedDays: {
           ...user.checkedDays,
-          [yearMonth]: checkedDays.filter((d:number) => d !== todayAsNumber),
+          [currentYearMonth]: checkedDays.filter((d:number) => d !== todayAsNumber),
         },
       });
       setIsTodayChecked(false);
     } else {
       setUser({
         ...user,
-        checkedDays: { ...user.checkedDays, [yearMonth]: [...checkedDays, todayAsNumber] },
+        checkedDays: { ...user.checkedDays, [currentYearMonth]: [...checkedDays, todayAsNumber] },
       });
       setIsTodayChecked(true);
     }
