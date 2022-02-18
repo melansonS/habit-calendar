@@ -4,12 +4,14 @@ import {
   startOfDay,
   getMonth,
   getYear,
+  subDays,
 } from 'date-fns';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
   Box, Button, Paper, Typography,
 } from '@mui/material';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 import Cells from './cells';
 import Days from './days';
 import { useUser } from '../../context/userContext';
@@ -51,6 +53,8 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   const handleToggleToday = () => {
     if (!user || !user.checkedDays) return;
     const todayAsNumber = today.getTime();
+    const yesterdayAsNumber = subDays(today, 1).getTime();
+
     const currentYearMonth = `${getYear(today)}${getMonth(today)}`;
     const checkedDays = user?.checkedDays[currentYearMonth];
     if (!checkedDays) {
@@ -60,6 +64,8 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           ...user.checkedDays,
           [currentYearMonth]: [todayAsNumber],
         },
+        currentStreak: 1,
+        longestStreak: user.longestStreak < 1 ? 1 : user.longestStreak,
       });
       return;
     }
@@ -70,12 +76,20 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           ...user.checkedDays,
           [currentYearMonth]: checkedDays.filter((d:number) => d !== todayAsNumber),
         },
+        currentStreak: user.currentStreak ? user.currentStreak - 1 : 0,
+        longestStreak: checkedDays.includes(yesterdayAsNumber) ? user.longestStreak - 1 : user.longestStreak,
       });
       setIsTodayChecked(false);
     } else {
       setUser({
         ...user,
-        checkedDays: { ...user.checkedDays, [currentYearMonth]: [...checkedDays, todayAsNumber] },
+        checkedDays: {
+          ...user.checkedDays,
+          [currentYearMonth]: [...checkedDays, todayAsNumber],
+        },
+        currentStreak: user.currentStreak ? user.currentStreak + 1 : 1,
+        longestStreak: user.longestStreak < user.currentStreak + 1 ? user.currentStreak + 1 : user.longestStreak,
+
       });
       setIsTodayChecked(true);
     }
@@ -111,7 +125,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
 
   const headerDateFormat = 'MMMM yyyy';
   return (
-    <Paper elevation={6} sx={{ p: 2, m: 2 }}>
+    <Paper elevation={6} sx={{ p: 8, m: 8 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
         <Box>
           <Button onClick={prevMonth}>
@@ -150,6 +164,19 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         </Typography>
         <Typography>
           {`you've been at it for ${totalDays} day${totalDays !== 1 ? 's' : ''}!`}
+        </Typography>
+        {user.currentStreak > 2 && (
+        <Typography>
+          You&apos;re streaking baby!
+          {user.currentStreak}
+          <WhatshotIcon />
+        </Typography>
+        )}
+        <Typography>
+          Longest Streak:
+          {' '}
+          {user.longestStreak}
+          <WhatshotIcon />
         </Typography>
       </Box>
     </Paper>

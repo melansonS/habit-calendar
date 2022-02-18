@@ -6,13 +6,13 @@ import {
 
 import Calendar from '../components/calendar/calendar';
 import { useTheme } from '../context/themeContext';
+import { useUser } from '../context/userContext';
 
 export default function CalendarPage() {
-  const { isLoading, user } = useAuth0();
+  const { isLoading } = useAuth0();
+  const { user } = useUser();
   const { isDarkMode } = useTheme();
-  if (user?.given_name) {
-    user.given_name = '';
-  }
+
   return (
     <Card sx={{ p: 2 }}>
       <h2>
@@ -24,7 +24,7 @@ export default function CalendarPage() {
         : (
           <Paper elevation={3} sx={{ m: 1, p: 1 }}>
             <Typography>
-              {`Welcome ${user?.given_name || user?.nickname}`}
+              {`Welcome ${user.name}`}
             </Typography>
             <Calendar isDarkMode={isDarkMode} />
           </Paper>

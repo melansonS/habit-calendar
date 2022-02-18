@@ -6,7 +6,10 @@ import mockUserData from './userMockData';
 
 export interface IUser {
     name: string
-    checkedDays: {[name: string]: number[]} | null
+    checkedDays: {[name: string]: number[]} | null,
+    isStreaking: boolean,
+    currentStreak: number,
+    longestStreak: number,
   }
 
 interface IUserContext {
@@ -18,6 +21,9 @@ export const UserContext = createContext<IUserContext>({
   user: {
     name: '',
     checkedDays: null,
+    isStreaking: false,
+    currentStreak: 0,
+    longestStreak: 0,
   },
   setUser: () => {},
 
@@ -25,7 +31,13 @@ export const UserContext = createContext<IUserContext>({
 
 export function UserContextProvider({ children } : {children: React.ReactNode}) {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const [userValue, setUserValue] = useState<IUser>({ name: '', checkedDays: null });
+  const [userValue, setUserValue] = useState<IUser>({
+    name: '',
+    checkedDays: null,
+    isStreaking: false,
+    currentStreak: 0,
+    longestStreak: 0,
+  });
 
   useEffect(() => {
     const getUserData = async () => {
