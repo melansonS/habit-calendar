@@ -22,25 +22,10 @@ interface ICalendarProps {
 
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  // const [user, setUser] = useState<IUser | undefined>();
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
   const today = startOfDay(new Date());
   const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
-  const [totalDays, setTotalDays] = useState<number>(0);
   const { user, setUser } = useUser();
-  useEffect(() => {
-    if (user?.checkedDays) {
-      const reducedCheckedDays:number = Object.keys(user.checkedDays)
-        .reduce((prev: any, curr: any) => {
-          if (user.checkedDays && user?.checkedDays[curr]) {
-            return prev + user.checkedDays[curr].length;
-          }
-          return prev;
-        }, 0);
-      setTotalDays(reducedCheckedDays);
-    }
-  }, [user]);
-
   useEffect(() => {
     if (!user || !user.checkedDays) return;
     const todayAsNumber = today.getTime();
@@ -163,7 +148,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           </Button>
         </Typography>
         <Typography>
-          {`you've been at it for ${totalDays} day${totalDays !== 1 ? 's' : ''}!`}
+          {`you've been at it for ${user.totalDays} day${user.totalDays !== 1 ? 's' : ''}!`}
         </Typography>
         {user.currentStreak > 2 && (
         <Typography>

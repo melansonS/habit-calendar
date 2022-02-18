@@ -10,6 +10,7 @@ export interface IUser {
     isStreaking: boolean,
     currentStreak: number,
     longestStreak: number,
+    totalDays: number,
   }
 
 interface IUserContext {
@@ -24,6 +25,7 @@ export const UserContext = createContext<IUserContext>({
     isStreaking: false,
     currentStreak: 0,
     longestStreak: 0,
+    totalDays: 0,
   },
   setUser: () => {},
 
@@ -37,6 +39,7 @@ export function UserContextProvider({ children } : {children: React.ReactNode}) 
     isStreaking: false,
     currentStreak: 0,
     longestStreak: 0,
+    totalDays: 0,
   });
 
   useEffect(() => {

@@ -18,6 +18,7 @@ const mockUserData:IUser = {
   isStreaking: false,
   currentStreak: 2,
   longestStreak: 2,
+  totalDays: 0,
 };
 
 const today = startOfDay(new Date()).getTime();
@@ -49,5 +50,5 @@ if (allCheckedDays && allCheckedDays.includes(yesterday)) {
 }
 
 console.log({ allCheckedDays }, 'current streak:', currentStreak);
-
+mockUserData.totalDays = allCheckedDays?.length || 0;
 mockUserData.currentStreak = currentStreak;
