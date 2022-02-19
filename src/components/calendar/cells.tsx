@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import Grow from '@mui/material/Grow';
+import Cell from './cell';
 
 interface ICellsProps {
   currentMonth: Date
@@ -20,32 +21,10 @@ interface ICellsProps {
   handleCellClick: (day: number) => void
 }
 
-interface ICellProps {
-  isToday?: boolean
-  isChecked?: boolean
-  isDarkMode: boolean
-  primary: string
-  secondary: string
-}
-
 const CellsContainer = styled(Box)`
 `;
 
-const Cell = styled(Box)`
-  height: 5rem;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.4s ease-out;
-  background-color: ${({ isChecked, primary }:ICellProps) => (isChecked ? primary : 'inherit')};
-  border: ${({ isToday, secondary } :ICellProps) => (isToday ? `2px solid ${secondary}` : 'none')};
-  :hover {
-    background-color: ${({ isDarkMode }:ICellProps) => (isDarkMode ? '#333' : '#eee')};
-  }
-`;
-
-const ResizableIcon = styled(CheckCircleOutlinedIcon)`
+export const ResizableIcon = styled(CheckCircleOutlinedIcon)`
   font-size: 20px;
   @media (min-width: 768px) {
     font-size: 30px;

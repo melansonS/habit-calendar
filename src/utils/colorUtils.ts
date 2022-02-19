@@ -1,5 +1,6 @@
 import { PaletteColor, Color } from '@mui/material';
 import { TypeText } from '@mui/material/styles/createPalette';
+import { IColor } from './colorTypes';
 
 function ColorToHex(color:number): string {
   const hexadecimal = color.toString(16);
@@ -61,8 +62,23 @@ export default function simpleColorBlend(c1 : string, c2 : string, percentage = 
   return ConvertRGBAtoHex(color3[0], color3[1], color3[2], color3[3] || undefined);
 }
 
+const DARK_MODE_SATURATION = 0.6;
+export function desaturateColor(color: string) {
+  // https://stackoverflow.com/questions/13348129/using-native-javascript-to-desaturate-a-colour/13355255
+  const col = color.includes('rgb') ? stripRGBA(color) : HexToRGB(color);
+  const sat = DARK_MODE_SATURATION;
+  // https:// en.m.wikipedia.org/wiki/Grayscale#Luma_coding_in_video_systems
+  const gray = col.r * 0.3086 + col.g * 0.6094 + col.b * 0.0820;
+
+  col.r = Math.round(col.r * sat + gray * (1 - sat));
+  col.g = Math.round(col.g * sat + gray * (1 - sat));
+  col.b = Math.round(col.b * sat + gray * (1 - sat));
+  return ConvertRGBAtoHex(col.r, col.g, col.b);
+}
+
 const USEFULCOLORS = ['main', 'light', 'dark', 'primary', 'secondary', 'disabled'];
-export const destructurePaletteColor = (colors: PaletteColor | TypeText| Color) => Object.keys(colors)
+export const destructurePaletteColor = (colors:
+  PaletteColor | TypeText | Color | Partial<IColor>) => Object.keys(colors)
   .map((color, index) => {
     let colorValue = Object.values(colors)[index];
     if (colorValue.includes('rgb')) {
@@ -71,6 +87,7 @@ export const destructurePaletteColor = (colors: PaletteColor | TypeText| Color) 
       } = stripRGBA(colorValue);
       colorValue = ConvertRGBAtoHex(r, g, b, a);
     }
+
     return ({
       name: color,
       value: colorValue,

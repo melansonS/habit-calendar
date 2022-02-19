@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Grid,
+  Grow,
   Paper,
   Slider,
   Typography,
@@ -19,6 +20,8 @@ import {
 } from '../utils/colorUtils';
 import ThemeSelect from '../components/ThemeSelector';
 import ColorDisplayGridItem from '../components/colorDisplayGridItem';
+import Cell from '../components/calendar/cell';
+import { ResizableIcon } from '../components/calendar/cells';
 
 export default function ThemePage() {
   const {
@@ -26,6 +29,8 @@ export default function ThemePage() {
       primary,
       secondary,
       text,
+      darkThemeColors,
+      lightThemeColors,
     },
   } = useMUITheme();
   const {
@@ -41,9 +46,11 @@ export default function ThemePage() {
   }), [customPrimaryColor, customSecondaryColor]);
 
   useEffect(() => {
-    setCustomPrimaryColor(primary.main);
-    setCustomSecondaryColor(secondary.main);
-  }, [primary, secondary]);
+    if (lightThemeColors?.primary?.main && lightThemeColors?.secondary?.main) {
+      setCustomPrimaryColor(lightThemeColors.primary.main);
+      setCustomSecondaryColor(lightThemeColors.secondary.main);
+    }
+  }, [lightThemeColors]);
 
   const debouncedPrimaryColorChange = useRef(
     debounce((value: string) => {
@@ -179,24 +186,104 @@ export default function ThemePage() {
             onChange={(e, value) => handleColorBlendChange(value as number)}
           />
         </Box>
-        <Grid p={2} container spacing={2}>
-          {destructurePaletteColor(cPrimary).map((color) => (
-            <ColorDisplayGridItem
-              key={`primary-${color?.name}-${color?.value}`}
-              color={color}
-              xs={4}
-              md={2}
-            />
-          ))}
-          {destructurePaletteColor(cSecondary).map((color) => (
-            <ColorDisplayGridItem
-              key={`primary-${color?.name}-${color?.value}`}
-              color={color}
-              xs={4}
-              md={2}
-            />
-          ))}
-        </Grid>
+        <Box sx={{ display: 'flex' }}>
+
+          <Box sx={{ width: '45%' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }} p={2}>
+              Light theme!
+            </Typography>
+            <Grid p={2} container spacing={2}>
+              {destructurePaletteColor(cPrimary).map((color) => (
+                <ColorDisplayGridItem
+                  key={`primary-${color?.name}-${color?.value}`}
+                  color={color}
+                  xs={4}
+                  md={4}
+                  lg={4}
+                />
+              ))}
+              {destructurePaletteColor(cSecondary).map((color) => (
+                <ColorDisplayGridItem
+                  key={`primary-${color?.name}-${color?.value}`}
+                  color={color}
+                  xs={4}
+                  md={4}
+                  lg={4}
+                />
+              ))}
+              <Cell
+                primary={cPrimary.main}
+                secondary="red"
+                isChecked
+                isDarkMode={false}
+                style={{ width: '5rem', borderRadius: '5px', color: 'black' }}
+                m={2}
+              >
+                <Grow
+                  in
+                  timeout={1000}
+                >
+                  <ResizableIcon
+                    color="secondary"
+                    fontSize="large"
+                  />
+                </Grow>
+                <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+                  {1}
+                </Typography>
+              </Cell>
+            </Grid>
+          </Box>
+          {darkThemeColors?.primary?.main && darkThemeColors?.secondary?.main
+          && (
+          <Box sx={{ width: '45%' }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }} p={2}>
+              Dark theme!
+            </Typography>
+            <Grid p={2} container spacing={2}>
+              {destructurePaletteColor(darkThemeColors.primary).map((color) => (
+                <ColorDisplayGridItem
+                  key={`primary-${color?.name}-${color?.value}`}
+                  color={color}
+                  xs={4}
+                  md={4}
+                  lg={4}
+                />
+              ))}
+              {destructurePaletteColor(darkThemeColors.secondary).map((color) => (
+                <ColorDisplayGridItem
+                  key={`primary-${color?.name}-${color?.value}`}
+                  color={color}
+                  xs={4}
+                  md={4}
+                  lg={4}
+                />
+              ))}
+              <Cell
+                primary={darkThemeColors.primary.main}
+                secondary={darkThemeColors.secondary.main}
+                isChecked
+                isDarkMode
+                style={{ width: '5rem', borderRadius: '5px', color: 'white' }}
+                m={2}
+              >
+                <Grow
+                  in
+                  timeout={1000}
+                >
+                  <ResizableIcon
+                    color="secondary"
+                    fontSize="large"
+                  />
+                </Grow>
+                <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+                  {1}
+                </Typography>
+              </Cell>
+            </Grid>
+          </Box>
+          )}
+        </Box>
       </Paper>
     </div>
   );
