@@ -68,7 +68,8 @@ export default function Cells({
     }
     return (
       <Cell
-        primary={primary[isDarkMode ? 'dark' : 'light']}
+        m={0.3}
+        primary={primary.main}
         secondary={secondary.main}
         isChecked={checkedDays.includes(day)}
         isDarkMode={isDarkMode}
@@ -87,7 +88,7 @@ export default function Cells({
           />
         </Grow>
         )}
-        <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+        <Typography style={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
           {formattedDate}
         </Typography>
       </Cell>

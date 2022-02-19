@@ -11,7 +11,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
   Box, Button, Paper, Typography,
 } from '@mui/material';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import Cells from './cells';
 import Days from './days';
 import { useUser } from '../../context/userContext';
@@ -113,7 +113,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
     <Paper elevation={6} sx={{ p: 8, m: 8 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
         <Box>
-          <Button onClick={prevMonth}>
+          <Button variant="contained" onClick={prevMonth}>
             <ChevronLeftIcon />
           </Button>
         </Box>
@@ -123,7 +123,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           </Typography>
         </Box>
         <Box>
-          <Button onClick={nextMonth}>
+          <Button variant="contained" onClick={nextMonth}>
             <ChevronRightIcon />
           </Button>
         </Box>
@@ -141,7 +141,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           Mark today as
           {' '}
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={handleToggleToday}
           >
             {isTodayChecked ? 'not Completed..' : 'Complete!'}
@@ -154,14 +154,14 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         <Typography>
           You&apos;re streaking baby!
           {user.currentStreak}
-          <WhatshotIcon />
+          <LocalFireDepartmentIcon />
         </Typography>
         )}
         <Typography>
           Longest Streak:
           {' '}
           {user.longestStreak}
-          <WhatshotIcon />
+          <LocalFireDepartmentIcon />
         </Typography>
       </Box>
     </Paper>

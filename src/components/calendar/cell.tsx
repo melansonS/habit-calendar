@@ -9,15 +9,17 @@ export interface ICellProps {
 }
 
 const Cell = styled(Box)`
-  height: 5rem;
-  height: 5rem;
-  position: relative;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  transition: background-color 0.4s ease-out;
   background-color: ${({ isChecked, primary }:ICellProps) => (isChecked ? primary : 'inherit')};
   border: ${({ isToday, secondary } :ICellProps) => (isToday ? `2px solid ${secondary}` : 'none')};
+  border-radius: 5px;
+  box-sizing: border-box;
+  display: flex;
+  height: 5rem;
+  justify-content: center;
+  position: relative;
+  transition: background-color 0.4s ease-out;
+  
   :hover {
     background-color: ${({ isDarkMode }:ICellProps) => (isDarkMode ? '#333' : '#eee')};
   }
