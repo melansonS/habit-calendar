@@ -31,6 +31,7 @@ export default function ThemePage() {
   const {
     setCustomTheme,
     dispatchColorBlendPercent,
+    colorBlendPercent,
   } = useTheme();
   const [customPrimaryColor, setCustomPrimaryColor] = useState(primary.main);
   const [customSecondaryColor, setCustomSecondaryColor] = useState(secondary.main);
@@ -170,6 +171,7 @@ export default function ThemePage() {
         <Box sx={{ m: 1, width: '45%' }}>
           <Slider
             aria-label="Color Blend Percentage"
+            value={colorBlendPercent}
             step={BLEND_STEP}
             marks
             min={BLEND_PERCENT}

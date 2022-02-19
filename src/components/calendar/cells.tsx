@@ -89,7 +89,7 @@ export default function Cells({
     }
     return (
       <Cell
-        primary={primary.main}
+        primary={primary[isDarkMode ? 'dark' : 'light']}
         secondary={secondary.main}
         isChecked={checkedDays.includes(day)}
         isDarkMode={isDarkMode}
