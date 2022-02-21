@@ -3,6 +3,8 @@ import React, {
   createContext, useEffect, useMemo, useState,
 } from 'react';
 import { ITheme, ThemeNamesEnum } from '../utils/colorTypes';
+import { URL } from '../utils/consts';
+import postUpdatedUser from '../utils/userContextUtils';
 import mockUserData from './userMockData';
 
 interface IUserTheme {
@@ -51,22 +53,23 @@ export const UserContext = createContext<IUserContext>({
 export function UserContextProvider({ children } : {children: React.ReactNode}) {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const [isUserLoading, setIsUserLoading] = useState<boolean>(false);
-
+  const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
   const [userValue, setUserValue] = useState<IUser | null>(null);
 
   useEffect(() => {
     const getUserData = async () => {
       if (isAuthenticated) {
         setIsUserLoading(true);
-        const accessToken = await getAccessTokenSilently({
+        const fetchedToken = await getAccessTokenSilently({
           audience: 'hcAuth',
           scope: 'read:current_user',
         });
-        if (!accessToken) return false;
+        if (!fetchedToken) return false;
         try {
-          const res = await fetch('http://localhost:8080/private', {
+          setAccessToken(fetchedToken);
+          const res = await fetch(`${URL}/user`, {
             headers: {
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${fetchedToken}`,
             },
           });
           if (!res) return false;
@@ -78,6 +81,7 @@ export function UserContextProvider({ children } : {children: React.ReactNode}) 
           console.log('usercontext fetch user data error:', err);
           console.warn('Unable to get data from the server, using temp Mock Data!');
           setUserValue(mockUserData);
+          setIsUserLoading(false);
         }
       }
       return false;
@@ -87,9 +91,14 @@ export function UserContextProvider({ children } : {children: React.ReactNode}) 
 
   const userContextValue:IUserContext = useMemo(() => ({
     user: userValue,
-    setUser: (user: React.SetStateAction<IUser | null>) => setUserValue(user),
+    setUser: async (user: React.SetStateAction<IUser | null>) => {
+      if (user && accessToken) {
+        await postUpdatedUser(user as IUser, accessToken);
+      }
+      setUserValue(user);
+    },
     isUserLoading,
-  }), [userValue, isUserLoading]);
+  }), [userValue, isUserLoading, accessToken]);
 
   return (
     <UserContext.Provider value={userContextValue}>

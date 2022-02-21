@@ -1,8 +1,9 @@
 import React, {
-  createContext, useEffect, useMemo, useState,
+  createContext, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import buildTheme from '../utils/themeContextUtils';
+import { LOCAL_THEME_DATA } from '../utils/consts';
 import { ITheme, ThemeNamesEnum } from '../utils/colorTypes';
 import { BLEND_PERCENT } from '../utils/colorUtils';
 import { useUser } from './userContext';
@@ -32,7 +33,7 @@ export const ThemeContext = createContext<IThemeContext>({
 });
 
 export function ThemeContextProvider({ children } : {children: React.ReactNode}) {
-  const localThemeString = (localStorage.getItem('localThemeData'));
+  const localThemeString = (localStorage.getItem(LOCAL_THEME_DATA));
   let localTheme;
   if (localThemeString !== null) {
     localTheme = JSON.parse(localThemeString);
@@ -43,17 +44,18 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
   const [customTheme, setCustomTheme] = useState<Partial<ITheme> | null>(null);
   const [colorBlendPercent, setColorBlendPercent] = useState<number>(localTheme?.colorBlendPercent || BLEND_PERCENT);
   const [isThemeLoading, setIsThemeLoading] = useState<boolean>(true);
-
-  const { user, isUserLoading } = useUser();
+  const isMounted = useRef(false);
+  const { user, isUserLoading, setUser } = useUser();
 
   useEffect(() => {
+    document.body.style.transition = 'background-color 0.4s ease-out';
     if (isUserLoading || !user) {
       setIsThemeLoading(false);
       return;
     }
     const asyncThemeCheck = async () => {
       const userThemeData = user.theme;
-      localStorage.setItem('localThemeData', JSON.stringify(userThemeData));
+      localStorage.setItem(LOCAL_THEME_DATA, JSON.stringify(userThemeData));
       if (userThemeData) {
         if (themeName !== userThemeData.themeName) setThemeName(userThemeData.themeName as ThemeNamesEnum);
         if (isDarkMode !== userThemeData.isDarkMode) setIsDarkMode(userThemeData.isDarkMode);
@@ -66,6 +68,26 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
     };
     asyncThemeCheck();
   }, [user, isUserLoading]);
+
+  useEffect(() => {
+    // ref to boolean value prevents the useEffect from running on the first render
+    if (!isMounted.current) {
+      isMounted.current = true;
+    } else {
+      const updatedTheme = {
+        isDarkMode, themeName, customTheme, colorBlendPercent,
+      };
+      if (user && user.theme) {
+        const updatedUser = {
+          ...user,
+          theme: updatedTheme,
+        };
+        setUser(updatedUser);
+      }
+      localStorage.setItem(LOCAL_THEME_DATA, JSON.stringify(updatedTheme));
+    }
+  }, [isDarkMode, themeName, customTheme, colorBlendPercent]);
+
   const theme = useMemo(
     () => (
       buildTheme(customTheme, themeName, isDarkMode, colorBlendPercent)),
