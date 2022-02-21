@@ -18,7 +18,7 @@ import { useTheme } from '../context/themeContext';
 import {
   BLEND_PERCENT, BLEND_STEP, destructurePaletteColor,
 } from '../utils/colorUtils';
-import ThemeSelect from '../components/ThemeSelector';
+import ThemeSelector from '../components/ThemeSelector';
 import ColorDisplayGridItem from '../components/colorDisplayGridItem';
 import Cell from '../components/calendar/cell';
 import { ResizableIcon } from '../components/calendar/cells';
@@ -110,7 +110,7 @@ export default function ThemePage() {
       <Paper sx={{ m: 3 }}>
         <Typography variant="h5">Current Theme</Typography>
         <Box p={2}>
-          <ThemeSelect />
+          <ThemeSelector />
         </Box>
         <Grid p={2} container spacing={2}>
           <Grid item xs={12}>

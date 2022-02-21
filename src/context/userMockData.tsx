@@ -1,4 +1,5 @@
 import { startOfDay, subDays } from 'date-fns';
+import { ThemeNamesEnum } from '../utils/colorTypes';
 import { IUser } from './userContext';
 
 const mockUserData:IUser = {
@@ -19,6 +20,12 @@ const mockUserData:IUser = {
   currentStreak: 2,
   longestStreak: 2,
   totalDays: 0,
+  theme: {
+    colorBlendPercent: 0.14,
+    customTheme: null,
+    isDarkMode: true,
+    themeName: 'INDIGO' as ThemeNamesEnum,
+  },
 };
 
 const today = startOfDay(new Date()).getTime();

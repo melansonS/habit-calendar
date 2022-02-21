@@ -9,7 +9,7 @@ import Select from '@mui/material/Select';
 import { ThemeNamesEnum } from '../utils/colorTypes';
 import { useTheme } from '../context/themeContext';
 
-export default function ThemeSelect() {
+export default function ThemeSelector() {
   const {
     themeName,
     dispatchThemeName,

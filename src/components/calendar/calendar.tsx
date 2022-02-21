@@ -12,6 +12,7 @@ import {
   Box, Button, Paper, Typography,
 } from '@mui/material';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import { Navigate } from 'react-router-dom';
 import Cells from './cells';
 import Days from './days';
 import { useUser } from '../../context/userContext';
@@ -109,6 +110,11 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const headerDateFormat = 'MMMM yyyy';
+
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <Paper elevation={6} sx={{ p: 8, m: 8 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>

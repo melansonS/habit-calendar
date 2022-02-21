@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,20 +19,25 @@ import HomePage from './pages/homePage';
 import ProfilePage from './pages/profilePage';
 import CalendarPage from './pages/calendarPage';
 import ThemePage from './pages/themePage';
+import { useTheme } from './context/themeContext';
+import { useUser } from './context/userContext';
 
 function App() {
   const { isLoading } = useAuth0();
+  const { isThemeLoading } = useTheme();
+  const { isUserLoading } = useUser();
+
   return (
     <Container sx={{ pt: 15 }} maxWidth="xl" className="App">
       <CssBaseline />
       <Paper>
         <Router>
           <NavBar />
-          {isLoading
+          {isLoading || isThemeLoading || isUserLoading
             ? (
               <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={isLoading}
+                open={isLoading || isThemeLoading}
               >
                 <CircularProgress color="inherit" />
               </Backdrop>

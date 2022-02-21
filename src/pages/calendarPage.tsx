@@ -24,7 +24,7 @@ export default function CalendarPage() {
         : (
           <Paper elevation={3} sx={{ m: 1, p: 1 }}>
             <Typography>
-              {`Welcome ${user.name}`}
+              {`Welcome ${user && user.name}`}
             </Typography>
             <Calendar isDarkMode={isDarkMode} />
           </Paper>

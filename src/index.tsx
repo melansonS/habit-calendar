@@ -15,11 +15,11 @@ ReactDOM.render(
       audience="hcAuth"
       scope="read:current_user"
     >
-      <ThemeContextProvider>
-        <UserContextProvider>
+      <UserContextProvider>
+        <ThemeContextProvider>
           <App />
-        </UserContextProvider>
-      </ThemeContextProvider>
+        </ThemeContextProvider>
+      </UserContextProvider>
     </Auth0Provider>
   </React.StrictMode>,
 
