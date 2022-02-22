@@ -11,11 +11,18 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {
   Box, Button, Paper, Typography,
 } from '@mui/material';
+import { debounce } from 'lodash';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import { Navigate } from 'react-router-dom';
 import Cells from './cells';
 import Days from './days';
 import { useUser } from '../../context/userContext';
+
+// @ts-ignore
+import audio from '../../audio/mixkit-cool-interface-click-tone-2568.wav';
+// import audio from '../../audio/mixkit-single-key-press-in-a-laptop-2541.wav';
+// import audio from '../../audio/mixkit-slide-click-1130.wav';
+// import audio from '../../audio/mixkit-plastic-bubble-click-1124.wav';
 
 interface ICalendarProps {
   isDarkMode: boolean
@@ -35,6 +42,12 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
       setIsTodayChecked(true);
     }
   }, []);
+
+  const playAudio = () => {
+    const player = new Audio(audio);
+    player.volume = 1;
+    player.play();
+  };
 
   const handleToggleToday = () => {
     if (!user || !user.checkedDays) return;
@@ -67,6 +80,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
       });
       setIsTodayChecked(false);
     } else {
+      playAudio();
       setUser({
         ...user,
         checkedDays: {
@@ -82,23 +96,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const handleCellClick = (day: number) => {
-    if (!user || !user.checkedDays) return;
     console.log(yearMonth, day);
-    const checkedDays = user?.checkedDays[yearMonth];
-    if (checkedDays?.includes(day)) {
-      setUser({
-        ...user,
-        checkedDays: {
-          ...user.checkedDays,
-          [yearMonth]: checkedDays.filter((d:number) => d !== day),
-        },
-      });
-    } else {
-      setUser({
-        ...user,
-        checkedDays: { ...user.checkedDays, [yearMonth]: [...checkedDays, day] },
-      });
-    }
   };
 
   const nextMonth = () => {
@@ -108,6 +106,10 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
   };
+
+  const debouncedToggleToday = debounce(() => {
+    handleToggleToday();
+  }, 200);
 
   const headerDateFormat = 'MMMM yyyy';
 
@@ -148,7 +150,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           {' '}
           <Button
             variant="contained"
-            onClick={handleToggleToday}
+            onClick={debouncedToggleToday}
           >
             {isTodayChecked ? 'not Completed..' : 'Complete!'}
           </Button>
