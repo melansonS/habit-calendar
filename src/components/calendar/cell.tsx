@@ -6,6 +6,7 @@ export interface ICellProps {
   isDarkMode: boolean
   primary: string
   secondary: string
+  contrastText: string;
 }
 
 const Cell = styled(Box)`
@@ -14,6 +15,7 @@ const Cell = styled(Box)`
   border: ${({ isToday, secondary } :ICellProps) => (isToday ? `2px solid ${secondary}` : 'none')};
   border-radius: 5px;
   box-sizing: border-box;
+  color: ${({ contrastText, isChecked }: ICellProps) => (isChecked ? contrastText : 'inherit')};
   display: flex;
   height: 5rem;
   justify-content: center;

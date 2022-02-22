@@ -216,8 +216,9 @@ export default function ThemePage() {
                 secondary="red"
                 isChecked
                 isDarkMode={false}
-                style={{ width: '5rem', borderRadius: '5px', color: 'black' }}
+                style={{ width: '5rem', borderRadius: '5px' }}
                 m={2}
+                contrastText={lightThemeColors?.primary?.contrastText || primary.contrastText}
               >
                 <Grow
                   in
@@ -228,7 +229,7 @@ export default function ThemePage() {
                     fontSize="large"
                   />
                 </Grow>
-                <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+                <Typography style={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
                   {1}
                 </Typography>
               </Cell>
@@ -264,8 +265,9 @@ export default function ThemePage() {
                 secondary={darkThemeColors.secondary.main}
                 isChecked
                 isDarkMode
-                style={{ width: '5rem', borderRadius: '5px', color: 'white' }}
+                style={{ width: '5rem', borderRadius: '5px' }}
                 m={2}
+                contrastText={darkThemeColors.primary.contrastText || primary.contrastText}
               >
                 <Grow
                   in
@@ -276,7 +278,7 @@ export default function ThemePage() {
                     fontSize="large"
                   />
                 </Grow>
-                <Typography style={{ position: 'absolute', top: '0.75rem', right: '0.75rem' }}>
+                <Typography style={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
                   {1}
                 </Typography>
               </Cell>

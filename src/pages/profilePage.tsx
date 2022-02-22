@@ -7,8 +7,17 @@ import {
   Typography,
   Tabs,
   Tab,
+  Button,
 } from '@mui/material';
-import StyledComponentTests from '../components/styledComponentTests';
+
+// @ts-ignore
+import audio0 from '../audio/mixkit-cool-interface-click-tone-2568.wav';
+// @ts-ignore
+import audio1 from '../audio/mixkit-single-key-press-in-a-laptop-2541.wav';
+// @ts-ignore
+import audio2 from '../audio/mixkit-slide-click-1130.wav';
+// @ts-ignore
+import audio3 from '../audio/mixkit-plastic-bubble-click-1124.wav';
 
 interface ITabPanelProps {
   children: React.ReactNode
@@ -36,6 +45,11 @@ function TabPanel(props : ITabPanelProps) {
     </div>
   );
 }
+
+const playAudio = (index: number) => {
+  const audioArray = [audio0, audio1, audio2, audio3];
+  new Audio(audioArray[index]).play();
+};
 
 function ColorTabs() {
   const [value, setValue] = React.useState(1);
@@ -72,36 +86,18 @@ function ColorTabs() {
           This is a card... This is a card... This is a card... This is a card...
           This is a card... This is a card... This is a card... This is a card...
           This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-          is a card... This is a card... This is a card... This is a card...
-          This is a card... This is a card... This is a card... This is a card...
-
         </Typography>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Typography>
-          Item Two
+        <Typography variant="h4" align="center">
+          Audio!
         </Typography>
+        <Box p={4} sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Button onClick={() => playAudio(0)}>cool-interface-click-tone</Button>
+          <Button onClick={() => playAudio(1)}>single-key-press-in-a-laptop</Button>
+          <Button onClick={() => playAudio(2)}>slide-click</Button>
+          <Button onClick={() => playAudio(3)}>plastic-bubble-click</Button>
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Typography>
@@ -117,22 +113,11 @@ export default function ProfilePage() {
     <div>
       <Box p={5}>
         <Paper elevation={7}>
-          <Typography variant="h3" p={2}>
-            This is the homepage
-          </Typography>
+          <Card>
+            <ColorTabs />
+          </Card>
         </Paper>
-        <Card>
-          <Typography variant="h3" p={2}>
-            This is a card...
-          </Typography>
-        </Card>
       </Box>
-      <Box p={3}>
-        <StyledComponentTests />
-      </Box>
-      <Card>
-        <ColorTabs />
-      </Card>
     </div>
   );
 }

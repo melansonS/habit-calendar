@@ -9,7 +9,7 @@ import {
   styled, Box, Typography,
   useTheme as useMUITheme,
 } from '@mui/material';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import SpaOutlinedIcon from '@mui/icons-material/SpaOutlined';
 import Grow from '@mui/material/Grow';
 import Cell from './cell';
 
@@ -24,7 +24,7 @@ interface ICellsProps {
 const CellsContainer = styled(Box)`
 `;
 
-export const ResizableIcon = styled(CheckCircleOutlinedIcon)`
+export const ResizableIcon = styled(SpaOutlinedIcon)`
   font-size: 20px;
   @media (min-width: 768px) {
     font-size: 30px;
@@ -76,6 +76,7 @@ export default function Cells({
         isToday={today.getTime() === day}
         key={`col-${index % 7}-${day}`}
         onClick={() => handleCellClick(day)}
+        contrastText={primary.contrastText}
       >
         {checkedDays.includes(day) && (
         <Grow
