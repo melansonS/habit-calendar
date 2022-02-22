@@ -9,26 +9,28 @@ function useBreakPoints() {
       },
     },
   } = useMUITheme();
+
   const [breakpoint, setBreakpoint] = useState<Breakpoint>('xs');
+
+  function handleResize() {
+    const width = window.innerWidth;
+    let bp:Breakpoint = 'xs';
+    if (width >= xl) {
+      bp = 'xl';
+    } else if (width >= lg) {
+      bp = 'lg';
+    } else if (width >= md) {
+      bp = 'md';
+    } else if (width >= sm) {
+      bp = 'sm';
+    }
+    setBreakpoint(bp);
+  }
 
   useEffect(
     () => {
-      function handleResize() {
-        const width = window.innerWidth;
-        let bp:Breakpoint = 'xs';
-        if (width >= xl) {
-          bp = 'xl';
-        } else if (width >= lg) {
-          bp = 'lg';
-        } else if (width >= md) {
-          bp = 'md';
-        } else if (width >= sm) {
-          bp = 'sm';
-        }
-        setBreakpoint(bp);
-      }
-
       window.addEventListener('resize', handleResize);
+      handleResize();
       return () => window.removeEventListener('resize', handleResize);
     },
     [],
