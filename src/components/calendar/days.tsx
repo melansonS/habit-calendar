@@ -5,15 +5,15 @@ import {
 import {
   Box, Typography,
 } from '@mui/material';
+import useBreakPoints from '../../utils/useBreakPoint';
 
 interface IDaysProps {
   currentMonth: Date
-  isDarkMode: boolean
 }
 
-export default function Cells({ currentMonth, isDarkMode }: IDaysProps) {
-  console.log({ isDarkMode });
-  const dateFormat = 'EEEE';
+export default function Days({ currentMonth }: IDaysProps) {
+  const breakPoint = useBreakPoints();
+  const dateFormat = ['xs', 'sm', 'md'].includes(breakPoint) ? 'EEE' : 'EEEE';
   const days = [];
   const startDate = startOfWeek(currentMonth);
 

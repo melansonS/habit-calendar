@@ -34,6 +34,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   const today = startOfDay(new Date());
   const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
   const { user, setUser } = useUser();
+
   useEffect(() => {
     if (!user || !user.checkedDays) return;
     const todayAsNumber = today.getTime();
@@ -136,7 +137,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           </Button>
         </Box>
       </Box>
-      <Days currentMonth={currentMonth} isDarkMode={isDarkMode} />
+      <Days currentMonth={currentMonth} />
       <Cells
         checkedDays={user?.checkedDays && user.checkedDays[yearMonth] ? user.checkedDays[yearMonth] : []}
         currentMonth={currentMonth}
