@@ -74,7 +74,7 @@ export function UserContextProvider({ children } : {children: React.ReactNode}) 
           });
           if (!res) return false;
           const json = await res.json();
-          setUserValue(json.secrets[0].userData);
+          setUserValue(json.userData);
           setIsUserLoading(false);
           return true;
         } catch (err) {
