@@ -22,6 +22,7 @@ import ThemeSelector from '../components/ThemeSelector';
 import ColorDisplayGridItem from '../components/colorDisplayGridItem';
 import Cell from '../components/calendar/cell';
 import { ResizableIcon } from '../components/calendar/cells';
+import { makeDarkModeColors } from '../utils/themeContextUtils';
 
 export default function ThemePage() {
   const {
@@ -40,6 +41,7 @@ export default function ThemePage() {
   } = useTheme();
   const [customPrimaryColor, setCustomPrimaryColor] = useState(primary.main);
   const [customSecondaryColor, setCustomSecondaryColor] = useState(secondary.main);
+  const [customDarkThemeColors, setCustomDarkThemeColors] = useState(darkThemeColors);
   const { primary: cPrimary, secondary: cSecondary } = useMemo(() => createPalette({
     primary: { main: customPrimaryColor },
     secondary: { main: customSecondaryColor },
@@ -52,14 +54,20 @@ export default function ThemePage() {
     }
   }, [lightThemeColors]);
 
+  useEffect(() => {
+    setCustomDarkThemeColors(darkThemeColors);
+  }, [darkThemeColors]);
+
   const debouncedPrimaryColorChange = useRef(
     debounce((value: string) => {
       setCustomPrimaryColor(value);
+      setCustomDarkThemeColors(makeDarkModeColors(value, customSecondaryColor));
     }, 100),
   ).current;
   const debouncedSecondaryColorChange = useRef(
     debounce((value: string) => {
       setCustomSecondaryColor(value);
+      setCustomDarkThemeColors(makeDarkModeColors(customPrimaryColor, value));
     }, 100),
   ).current;
   const debouncedColorBlendChange = useRef(
@@ -99,6 +107,12 @@ export default function ThemePage() {
   const handleResetCustomColors = () => {
     setCustomPrimaryColor(primary.main);
     setCustomSecondaryColor(secondary.main);
+  };
+
+  const handleSwapCustomColors = () => {
+    const tempPrimary = customPrimaryColor;
+    setCustomPrimaryColor(customSecondaryColor);
+    setCustomSecondaryColor(tempPrimary);
   };
 
   // TODO: Clean up / organize all of these grids and boxes
@@ -169,10 +183,13 @@ export default function ThemePage() {
             />
           </Box>
           <Button sx={{ m: 1 }} variant="contained" onClick={handleSubmitCustomTheme}>
-            Apply!
+            Apply
+          </Button>
+          <Button color="secondary" sx={{ m: 1 }} variant="contained" onClick={handleSwapCustomColors}>
+            Swap
           </Button>
           <Button color="secondary" sx={{ m: 1 }} variant="contained" onClick={handleResetCustomColors}>
-            Reset!
+            Reset
           </Button>
         </Box>
         <Box sx={{ m: 1, width: '45%' }}>
@@ -213,7 +230,7 @@ export default function ThemePage() {
               ))}
               <Cell
                 primary={cPrimary.main}
-                secondary="red"
+                secondary={cSecondary.main}
                 isChecked
                 isDarkMode={false}
                 style={{ width: '5rem', borderRadius: '5px' }}
@@ -235,14 +252,14 @@ export default function ThemePage() {
               </Cell>
             </Grid>
           </Box>
-          {darkThemeColors?.primary?.main && darkThemeColors?.secondary?.main
+          {customDarkThemeColors?.primary?.main && customDarkThemeColors?.secondary?.main
           && (
           <Box sx={{ width: '45%' }}>
             <Typography variant="h6" sx={{ fontWeight: 'bold' }} p={2}>
               Dark theme!
             </Typography>
             <Grid p={2} container spacing={2}>
-              {destructurePaletteColor(darkThemeColors.primary).map((color) => (
+              {destructurePaletteColor(customDarkThemeColors.primary).map((color) => (
                 <ColorDisplayGridItem
                   key={`primary-${color?.name}-${color?.value}`}
                   color={color}
@@ -251,7 +268,7 @@ export default function ThemePage() {
                   lg={4}
                 />
               ))}
-              {destructurePaletteColor(darkThemeColors.secondary).map((color) => (
+              {destructurePaletteColor(customDarkThemeColors.secondary).map((color) => (
                 <ColorDisplayGridItem
                   key={`primary-${color?.name}-${color?.value}`}
                   color={color}
@@ -261,13 +278,13 @@ export default function ThemePage() {
                 />
               ))}
               <Cell
-                primary={darkThemeColors.primary.main}
-                secondary={darkThemeColors.secondary.main}
+                primary={customDarkThemeColors.primary.main}
+                secondary={customDarkThemeColors.secondary.main}
                 isChecked
                 isDarkMode
                 style={{ width: '5rem', borderRadius: '5px' }}
                 m={2}
-                contrastText={darkThemeColors.primary.contrastText || primary.contrastText}
+                contrastText={customDarkThemeColors.primary.contrastText || primary.contrastText}
               >
                 <Grow
                   in

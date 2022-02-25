@@ -12,9 +12,10 @@ import { useTheme } from '../context/themeContext';
 export default function ThemeSelector() {
   const {
     themeName,
+    customTheme,
     dispatchThemeName,
   } = useTheme();
-  const handleChange = (event: SelectChangeEvent<ThemeNamesEnum>) => {
+  const handleChange = (event: SelectChangeEvent<ThemeNamesEnum | 'CUSTOM'>) => {
     if (Object.keys(ThemeNamesEnum).includes(event.target.value)) {
       dispatchThemeName(event.target.value as ThemeNamesEnum);
     }
@@ -25,13 +26,16 @@ export default function ThemeSelector() {
         <InputLabel id="theme-selector">Theme</InputLabel>
         <Select
           labelId="theme-selector"
-          value={themeName}
+          value={customTheme ? 'CUSTOM' : themeName}
           label="Theme"
           onChange={handleChange}
         >
           {Object.keys(ThemeNamesEnum).map((name) => (
             <MenuItem key={`theme-${name}`} value={name}>{name}</MenuItem>
           ))}
+          {customTheme && (
+            <MenuItem key="theme-cutom" value="CUSTOM">CUSTOM</MenuItem>
+          )}
         </Select>
       </FormControl>
     </Box>

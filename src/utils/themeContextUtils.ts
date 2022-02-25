@@ -24,9 +24,9 @@ function baseDefaultBackground(isDarkMode: boolean) {
   return isDarkMode ? '#121212' : '#f9f9f9';
 }
 
-const makeDarkModeColors = (color: Partial<ITheme>) => createPalette({
-  primary: { main: desaturateColor(color.primary?.main!) },
-  secondary: { main: desaturateColor(color.secondary?.main!) },
+export const makeDarkModeColors = (primary:string, secondary:string) => createPalette({
+  primary: { main: desaturateColor(primary) },
+  secondary: { main: desaturateColor(secondary) },
 });
 
 const buildTheme = (
@@ -36,7 +36,7 @@ const buildTheme = (
   colorBlendPercent?: number,
 ) => {
   const lightThemeColors = customTheme || allThemes[themeName];
-  const darkthemeColors = makeDarkModeColors(lightThemeColors);
+  const darkthemeColors = makeDarkModeColors(lightThemeColors.primary!.main!, lightThemeColors.secondary!.main!);
   const themeColors = isDarkMode ? darkthemeColors : lightThemeColors;
   const theme = createTheme({
     typography: {
