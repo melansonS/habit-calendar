@@ -5,6 +5,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import App from './App';
 import { ThemeContextProvider } from './context/themeContext';
 import { UserContextProvider } from './context/userContext';
+import { AlertContextProvider } from './context/alertContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,11 +16,13 @@ ReactDOM.render(
       audience="hcAuth"
       scope="read:current_user"
     >
-      <UserContextProvider>
-        <ThemeContextProvider>
-          <App />
-        </ThemeContextProvider>
-      </UserContextProvider>
+      <AlertContextProvider>
+        <UserContextProvider>
+          <ThemeContextProvider>
+            <App />
+          </ThemeContextProvider>
+        </UserContextProvider>
+      </AlertContextProvider>
     </Auth0Provider>
   </React.StrictMode>,
 

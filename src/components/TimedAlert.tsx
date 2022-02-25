@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Alert } from '@mui/material';
-import { IAlert } from './AlertHandler';
+import { IAlert } from '../context/alertContext';
 
 export interface ITimedAlert extends IAlert{
   dismiss: (idString:string) => void

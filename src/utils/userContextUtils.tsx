@@ -12,6 +12,7 @@ const postUpdatedUser = async (user: IUser, accessToken: string) => {
   });
   const json = await res.json();
   console.log('in post updated user', json);
+  return json;
 };
 
 export default postUpdatedUser;

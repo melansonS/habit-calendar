@@ -5,6 +5,7 @@ import React, {
 import { ITheme, ThemeNamesEnum } from '../utils/colorTypes';
 import { URL } from '../utils/consts';
 import postUpdatedUser from '../utils/userContextUtils';
+import { useAlert } from './alertContext';
 import mockUserData from './userMockData';
 
 interface IUserTheme {
@@ -52,6 +53,7 @@ export const UserContext = createContext<IUserContext>({
 
 export function UserContextProvider({ children } : {children: React.ReactNode}) {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const { addAlert } = useAlert();
   const [isUserLoading, setIsUserLoading] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
   const [userValue, setUserValue] = useState<IUser | null>(null);
@@ -80,6 +82,11 @@ export function UserContextProvider({ children } : {children: React.ReactNode}) 
         } catch (err) {
           console.log('usercontext fetch user data error:', err);
           console.warn('Unable to get data from the server, using temp Mock Data!');
+          addAlert({
+            type: 'error',
+            message: 'Unable to get data from the server, using temp Mock Data!',
+            id: `error${new Date().getTime()}`,
+          });
           setUserValue(mockUserData);
           setIsUserLoading(false);
         }
@@ -93,7 +100,20 @@ export function UserContextProvider({ children } : {children: React.ReactNode}) 
     user: userValue,
     setUser: async (user: React.SetStateAction<IUser | null>) => {
       if (user && accessToken) {
-        await postUpdatedUser(user as IUser, accessToken);
+        const response = await postUpdatedUser(user as IUser, accessToken);
+        if (!response.success) {
+          addAlert({
+            type: 'error',
+            message: 'Unable to reach server for update',
+            id: `Error - ${new Date().getTime()}`,
+          });
+        } else {
+          addAlert({
+            type: 'success',
+            message: 'Congratulations!',
+            id: `Success - ${new Date().getTime()}`,
+          });
+        }
       }
       setUserValue(user);
     },

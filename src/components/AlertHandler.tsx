@@ -1,33 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { AlertColor, Box, Button } from '@mui/material';
 import TimedAlert from './TimedAlert';
-
-export interface IAlert {
-  type: AlertColor
-  message: string
-  id: string
-}
+import { useAlert } from '../context/alertContext';
 
 const randomNumber = () => new Date().getTime();
 
-interface IAlertHandler {
-  contextAlerts: IAlert[]
-}
+function AlertHandler() {
+  const { alerts, addAlert, dismissAlert } = useAlert();
 
-function AlertHandler({ contextAlerts }:IAlertHandler) {
-  const [alerts, setAlerts] = useState<IAlert[]>(contextAlerts);
-
-  const alertsRef = useRef(alerts);
-  useEffect(() => {
-    alertsRef.current = alerts;
-  }, [alerts]);
-
-  const addAlert = (type:AlertColor, message:string, cAlerts:IAlert[]) => {
-    setAlerts([...cAlerts, { type, message, id: `${message}${randomNumber()}` }]);
+  const handleAddAlert = (type:AlertColor, message:string) => {
+    addAlert({ type, message, id: `${message}${randomNumber()}` });
   };
 
-  const dismissAlert = (idString:string) => {
-    setAlerts(alertsRef.current.filter((alert) => `${alert.message}${alert.id}` !== idString));
+  const handleDismissAlert = (idString:string) => {
+    dismissAlert(idString);
   };
 
   // TODO: remove this..
@@ -48,10 +34,10 @@ function AlertHandler({ contextAlerts }:IAlertHandler) {
           id={alert.id}
           type={alert.type}
           message={alert.message}
-          dismiss={dismissAlert}
+          dismiss={handleDismissAlert}
         />
       ))}
-      <Button onClick={() => addAlert(typeArr[Math.floor(Math.random() * 3)], 'added Alert!  !', alerts)}>
+      <Button onClick={() => handleAddAlert(typeArr[Math.floor(Math.random() * 3)], 'added Alert!  !')}>
         Add alert.
       </Button>
     </Box>
