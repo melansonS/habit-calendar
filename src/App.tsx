@@ -21,11 +21,16 @@ import CalendarPage from './pages/calendarPage';
 import ThemePage from './pages/themePage';
 import { useTheme } from './context/themeContext';
 import { useUser } from './context/userContext';
+import AlertHandler, { IAlert } from './components/AlertHandler';
 
 function App() {
   const { isLoading } = useAuth0();
   const { isThemeLoading } = useTheme();
   const { isUserLoading } = useUser();
+  const tempAlerts:IAlert[] = [
+    { type: 'info', message: 'Test', id: `test${0}` },
+    { type: 'error', message: 'Error', id: `error${0}` },
+  ];
 
   return (
     <Container sx={{ pt: 15 }} maxWidth="xl" className="App">
@@ -52,6 +57,7 @@ function App() {
             )}
         </Router>
       </Paper>
+      <AlertHandler contextAlerts={tempAlerts} />
     </Container>
   );
 }
