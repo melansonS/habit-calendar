@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Alert } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Alert, Box, LinearProgress } from '@mui/material';
 import { IAlert } from '../context/alertContext';
 
 export interface ITimedAlert extends IAlert{
@@ -9,21 +9,46 @@ export interface ITimedAlert extends IAlert{
 function TimedAlert({
   message, type, id, dismiss,
 }: ITimedAlert) {
+  const [progress, setProgress] = useState<number>(100);
+  const displayLength = 2000;
+
+  let interval :NodeJS.Timer;
+  const clearAlertInterval = () => {
+    dismiss(`${message}${id}`);
+    clearInterval(interval);
+  };
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      dismiss(`${message}${id}`);
-    }, 2000);
-    return () => clearTimeout(timer);
+    interval = setInterval(() => {
+      setProgress((oldProgress) => oldProgress - 1);
+    }, displayLength / 100);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
+  useEffect(() => {
+    // Css animation causes a slight delay between hitting 0 and the visual feedback... hence the '-20 buffer'
+    // might need to be tweaked if the `displayLength` changes... need to find a better soliution for this.
+
+    if (progress <= -20) clearAlertInterval();
+  }, [progress]);
+
   return (
-    <Alert
-      severity={type}
-      onClick={() => dismiss(`${message}${id}`)}
-      sx={{ ':hover': { cursor: 'pointer' } }}
-    >
-      {message}
-    </Alert>
+    <>
+      <Alert
+        severity={type}
+        onClick={() => dismiss(`${message}${id}`)}
+        sx={{ width: '100%', mt: 2, ':hover': { cursor: 'pointer' } }}
+      >
+
+        {message}
+      </Alert>
+      <Box sx={{ width: '100%' }} pl={1} pr={1}>
+        <LinearProgress variant="determinate" value={progress} />
+      </Box>
+    </>
   );
 }
 

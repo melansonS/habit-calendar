@@ -22,10 +22,7 @@ export const AlertContext = createContext<IAlertContext>({
 });
 
 export function AlertContextProvider({ children }: {children: React.ReactNode}) {
-  const [alerts, setAlerts] = useState<IAlert[]>([
-    { type: 'info', message: 'Test', id: `test${0}` },
-    { type: 'error', message: 'Error', id: `error${0}` },
-  ]);
+  const [alerts, setAlerts] = useState<IAlert[]>([]);
 
   const alertsRef = useRef(alerts);
   useEffect(() => {
