@@ -41,7 +41,7 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
 
   const [themeName, setThemeName] = useState<ThemeNamesEnum>(localTheme?.themeName || ThemeNamesEnum.INDIGO);
   const [isDarkMode, setIsDarkMode] = useState(localTheme?.isDarkMode || false);
-  const [customTheme, setCustomTheme] = useState<Partial<ITheme> | null>(null);
+  const [customTheme, setCustomTheme] = useState<Partial<ITheme> | null>(localTheme?.customTheme || null);
   const [colorBlendPercent, setColorBlendPercent] = useState<number>(localTheme?.colorBlendPercent || BLEND_PERCENT);
   const [isThemeLoading, setIsThemeLoading] = useState<boolean>(true);
   const isMounted = useRef(false);

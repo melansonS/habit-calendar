@@ -4,6 +4,7 @@ CALENDAR
   - set up streak ui []
   - set up total days checked []
   - set up days out of current month ?? [] 
+  - Calculate streaks based on database info []
  
 AUTH
   - Auth0 set up [x]
