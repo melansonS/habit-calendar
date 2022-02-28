@@ -3,10 +3,8 @@ import React, {
   createContext, useEffect, useMemo, useState,
 } from 'react';
 import { ITheme, ThemeNamesEnum } from '../utils/colorTypes';
-import { URL } from '../utils/consts';
-import postUpdatedUser from '../utils/userContextUtils';
+import { fetchUserData, postUpdatedUser } from '../utils/userContextUtils';
 import { useAlert } from './alertContext';
-import mockUserData from './userMockData';
 
 interface IUserTheme {
   colorBlendPercent: number,
@@ -52,72 +50,52 @@ export const UserContext = createContext<IUserContext>({
 });
 
 export function UserContextProvider({ children } : {children: React.ReactNode}) {
-  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const { addAlert } = useAlert();
   const [isUserLoading, setIsUserLoading] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
   const [userValue, setUserValue] = useState<IUser | null>(null);
 
+  const fetchAccessToken = async () => {
+    const fetchedToken = await getAccessTokenSilently({
+      audience: 'hcAuth',
+      scope: 'read:current_user',
+    });
+    if (fetchedToken) {
+      setAccessToken(fetchedToken);
+    }
+    return fetchedToken;
+  };
+
   useEffect(() => {
     const getUserData = async () => {
       if (isAuthenticated) {
         setIsUserLoading(true);
-        const fetchedToken = await getAccessTokenSilently({
-          audience: 'hcAuth',
-          scope: 'read:current_user',
-        });
-        if (!fetchedToken) return false;
-        try {
-          setAccessToken(fetchedToken);
-          const res = await fetch(`${URL}/user`, {
-            headers: {
-              Authorization: `Bearer ${fetchedToken}`,
-            },
-          });
-          if (!res) return false;
-          const json = await res.json();
-          setUserValue(json.userData);
-          setIsUserLoading(false);
-          return true;
-        } catch (err) {
-          console.log('usercontext fetch user data error:', err);
-          console.warn('Unable to get data from the server, using temp Mock Data!');
-          addAlert({
-            type: 'error',
-            message: 'Unable to get data from the server, using temp Mock Data!',
-            id: `error${new Date().getTime()}`,
-          });
-          setUserValue(mockUserData);
+        if (!accessToken) {
+          await fetchAccessToken();
+        } else {
+          const response = await fetchUserData(accessToken);
+          if (response.alert) addAlert(response.alert);
+          setUserValue(response.user);
           setIsUserLoading(false);
         }
       }
-      return false;
     };
     getUserData();
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, accessToken]);
 
   const userContextValue:IUserContext = useMemo(() => ({
     user: userValue,
+    isUserLoading,
     setUser: async (user: React.SetStateAction<IUser | null>) => {
       if (user && accessToken) {
         const response = await postUpdatedUser(user as IUser, accessToken);
-        if (!response.success) {
-          addAlert({
-            type: 'error',
-            message: 'Unable to reach server for update',
-            id: `Error - ${new Date().getTime()}`,
-          });
-        } else {
-          addAlert({
-            type: 'success',
-            message: 'Congratulations!',
-            id: `Success - ${new Date().getTime()}`,
-          });
+        if (response.alert) addAlert(response.alert);
+        if (response.success) {
+          setUserValue(user);
         }
       }
-      setUserValue(user);
     },
-    isUserLoading,
   }), [userValue, isUserLoading, accessToken]);
 
   return (

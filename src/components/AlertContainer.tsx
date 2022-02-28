@@ -2,14 +2,13 @@ import React from 'react';
 import { AlertColor, Box, Button } from '@mui/material';
 import TimedAlert from './TimedAlert';
 import { useAlert } from '../context/alertContext';
-
-const randomNumber = () => new Date().getTime();
+import now from '../utils/useNow';
 
 function AlertContainer() {
   const { alerts, addAlert, dismissAlert } = useAlert();
 
   const handleAddAlert = (type:AlertColor, message:string) => {
-    addAlert({ type, message, id: `${message}${randomNumber()}` });
+    addAlert({ type, message, id: `${message}${now()}` });
   };
 
   const handleDismissAlert = (idString:string) => {
