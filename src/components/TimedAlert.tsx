@@ -10,7 +10,7 @@ function TimedAlert({
   message, type, id, dismiss,
 }: ITimedAlert) {
   const [progress, setProgress] = useState<number>(100);
-  const displayLength = 2000;
+  const displayLength = 3000;
 
   let interval :NodeJS.Timer;
   const clearAlertInterval = () => {
@@ -36,7 +36,7 @@ function TimedAlert({
   }, [progress]);
 
   return (
-    <>
+    <Box sx={{ width: '100%' }} pl={1} pr={1}>
       <Alert
         severity={type}
         onClick={() => dismiss(`${message}${id}`)}
@@ -45,10 +45,8 @@ function TimedAlert({
 
         {message}
       </Alert>
-      <Box sx={{ width: '100%' }} pl={1} pr={1}>
-        <LinearProgress variant="determinate" value={progress} />
-      </Box>
-    </>
+      <LinearProgress color={type} variant="determinate" value={progress} />
+    </Box>
   );
 }
 

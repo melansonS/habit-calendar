@@ -22,7 +22,7 @@ import ThemePage from './pages/themePage';
 import { useTheme } from './context/themeContext';
 import { useUser } from './context/userContext';
 import { useAlert } from './context/alertContext';
-import AlertHandler from './components/AlertHandler';
+import AlertContainer from './components/AlertContainer';
 import CatchAllRedirect from './pages/catchAllRedirect';
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
             ? (
               <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={isLoading || isThemeLoading}
+                open={isLoading || isThemeLoading || isUserLoading}
               >
                 <CircularProgress color="inherit" />
               </Backdrop>
@@ -57,7 +57,7 @@ function App() {
             )}
         </Router>
       </Paper>
-      {alerts.length > 0 && <AlertHandler />}
+      {alerts.length > 0 && <AlertContainer />}
     </Container>
   );
 }

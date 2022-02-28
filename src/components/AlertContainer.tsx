@@ -5,7 +5,7 @@ import { useAlert } from '../context/alertContext';
 
 const randomNumber = () => new Date().getTime();
 
-function AlertHandler() {
+function AlertContainer() {
   const { alerts, addAlert, dismissAlert } = useAlert();
 
   const handleAddAlert = (type:AlertColor, message:string) => {
@@ -44,4 +44,4 @@ function AlertHandler() {
   );
 }
 
-export default AlertHandler;
+export default AlertContainer;

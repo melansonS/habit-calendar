@@ -113,6 +113,7 @@ export default function ThemePage() {
     const tempPrimary = customPrimaryColor;
     setCustomPrimaryColor(customSecondaryColor);
     setCustomSecondaryColor(tempPrimary);
+    setCustomDarkThemeColors(makeDarkModeColors(customSecondaryColor, tempPrimary));
   };
 
   // TODO: Clean up / organize all of these grids and boxes
@@ -242,7 +243,7 @@ export default function ThemePage() {
                   timeout={1000}
                 >
                   <ResizableIcon
-                    color="secondary"
+                    $color={cSecondary.main}
                     fontSize="large"
                   />
                 </Grow>
@@ -291,7 +292,7 @@ export default function ThemePage() {
                   timeout={1000}
                 >
                   <ResizableIcon
-                    color="secondary"
+                    $color={customDarkThemeColors.secondary.main}
                     fontSize="large"
                   />
                 </Grow>

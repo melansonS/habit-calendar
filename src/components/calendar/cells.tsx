@@ -12,6 +12,7 @@ import {
 import SpaOutlinedIcon from '@mui/icons-material/SpaOutlined';
 import Grow from '@mui/material/Grow';
 import Cell from './cell';
+import { transientConfig } from '../styledComponentTests';
 
 interface ICellsProps {
   currentMonth: Date
@@ -21,11 +22,16 @@ interface ICellsProps {
   handleCellClick: (day: number) => void
 }
 
+interface IResizableIcon {
+  $color: string
+}
+
 const CellsContainer = styled(Box)`
 `;
 
-export const ResizableIcon = styled(SpaOutlinedIcon)`
+export const ResizableIcon = styled(SpaOutlinedIcon, transientConfig)`
   font-size: 20px;
+  color: ${({ $color }: IResizableIcon) => $color};
   @media (min-width: 768px) {
     font-size: 30px;
     flex-direction: column;
@@ -84,7 +90,7 @@ export default function Cells({
           timeout={1000}
         >
           <ResizableIcon
-            color="secondary"
+            $color={secondary.main}
             fontSize="large"
           />
         </Grow>
