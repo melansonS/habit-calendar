@@ -29,10 +29,10 @@ interface ICalendarProps {
 }
 
 export default function Calendar({ isDarkMode } : ICalendarProps) {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentDisplayMonth, setCurrentDisplayMonth] = useState(new Date());
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
   const today = startOfDay(new Date());
-  const yearMonth = `${getYear(currentMonth)}${getMonth(currentMonth)}`;
+  const yearMonth = `${getYear(currentDisplayMonth)}${getMonth(currentDisplayMonth)}`;
   const { user, setUser } = useUser();
 
   useEffect(() => {
@@ -56,8 +56,8 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
     const yesterdayAsNumber = subDays(today, 1).getTime();
 
     const currentYearMonth = `${getYear(today)}${getMonth(today)}`;
-    const checkedDays = user?.checkedDays[currentYearMonth];
-    if (!checkedDays) {
+    const checkedDaysInCurrentMonth = user?.checkedDays[currentYearMonth];
+    if (!checkedDaysInCurrentMonth) {
       setUser({
         ...user,
         checkedDays: {
@@ -69,15 +69,16 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
       });
       return;
     }
-    if (checkedDays?.includes(todayAsNumber)) {
+    if (checkedDaysInCurrentMonth?.includes(todayAsNumber)) {
       setUser({
         ...user,
         checkedDays: {
           ...user.checkedDays,
-          [currentYearMonth]: checkedDays.filter((d:number) => d !== todayAsNumber),
+          [currentYearMonth]: checkedDaysInCurrentMonth.filter((d:number) => d !== todayAsNumber),
         },
         currentStreak: user.currentStreak ? user.currentStreak - 1 : 0,
-        longestStreak: checkedDays.includes(yesterdayAsNumber) ? user.longestStreak - 1 : user.longestStreak,
+        longestStreak: checkedDaysInCurrentMonth
+          .includes(yesterdayAsNumber) ? user.longestStreak - 1 : user.longestStreak,
       });
       setIsTodayChecked(false);
     } else {
@@ -86,7 +87,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         ...user,
         checkedDays: {
           ...user.checkedDays,
-          [currentYearMonth]: [...checkedDays, todayAsNumber],
+          [currentYearMonth]: [...checkedDaysInCurrentMonth, todayAsNumber],
         },
         currentStreak: user.currentStreak ? user.currentStreak + 1 : 1,
         longestStreak: user.longestStreak < user.currentStreak + 1 ? user.currentStreak + 1 : user.longestStreak,
@@ -100,12 +101,16 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
     console.log(yearMonth, day);
   };
 
+  const handleJumpToCurrentMonth = () => {
+    setCurrentDisplayMonth(today);
+  };
+
   const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
+    setCurrentDisplayMonth(addMonths(currentDisplayMonth, 1));
   };
 
   const prevMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
+    setCurrentDisplayMonth(subMonths(currentDisplayMonth, 1));
   };
 
   const debouncedToggleToday = debounce(() => {
@@ -128,7 +133,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         </Box>
         <Box>
           <Typography variant="h4">
-            {format(currentMonth, headerDateFormat)}
+            {format(currentDisplayMonth, headerDateFormat)}
           </Typography>
         </Box>
         <Box>
@@ -137,25 +142,40 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           </Button>
         </Box>
       </Box>
-      <Days currentMonth={currentMonth} />
+      <Days currentMonth={currentDisplayMonth} />
       <Cells
         checkedDays={user?.checkedDays && user.checkedDays[yearMonth] ? user.checkedDays[yearMonth] : []}
-        currentMonth={currentMonth}
+        currentMonth={currentDisplayMonth}
         today={today}
         isDarkMode={isDarkMode}
         handleCellClick={handleCellClick}
       />
+      {today.getMonth() === currentDisplayMonth.getMonth()
+        ? (
+          <Typography align="center" variant="h6">
+            Mark today as
+            {' '}
+            <Button
+              variant="contained"
+              onClick={debouncedToggleToday}
+            >
+              {isTodayChecked ? 'not Completed..' : 'Complete!'}
+            </Button>
+          </Typography>
+        )
+        : (
+          <Typography align="center" variant="h6">
+            Jump back to
+            {' '}
+            <Button
+              variant="contained"
+              onClick={handleJumpToCurrentMonth}
+            >
+              {format(today, 'MMMM')}
+            </Button>
+          </Typography>
+        )}
       <Box pt={2}>
-        <Typography align="center" variant="h6">
-          Mark today as
-          {' '}
-          <Button
-            variant="contained"
-            onClick={debouncedToggleToday}
-          >
-            {isTodayChecked ? 'not Completed..' : 'Complete!'}
-          </Button>
-        </Typography>
         <Typography>
           {`you've been at it for ${user.totalDays} day${user.totalDays !== 1 ? 's' : ''}!`}
         </Typography>
