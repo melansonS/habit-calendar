@@ -23,6 +23,7 @@ import { useTheme } from './context/themeContext';
 import { useUser } from './context/userContext';
 import { useAlert } from './context/alertContext';
 import AlertHandler from './components/AlertHandler';
+import CatchAllRedirect from './pages/catchAllRedirect';
 
 function App() {
   const { isLoading } = useAuth0();
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
                 <Route path="/calendar" element={<ProtectedRoute element={<CalendarPage />} />} />
                 <Route path="/theme" element={<ProtectedRoute element={<ThemePage />} />} />
+                <Route path="*" element={<CatchAllRedirect />} />
               </Routes>
             )}
         </Router>
