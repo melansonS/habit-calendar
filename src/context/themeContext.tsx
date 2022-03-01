@@ -59,7 +59,11 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
       if (userThemeData) {
         if (themeName !== userThemeData.themeName) setThemeName(userThemeData.themeName as ThemeNamesEnum);
         if (isDarkMode !== userThemeData.isDarkMode) setIsDarkMode(userThemeData.isDarkMode);
-        if (customTheme !== userThemeData.customTheme) setCustomTheme(userThemeData.customTheme);
+        if (customTheme?.primary?.main
+          !== userThemeData.customTheme?.primary?.main
+          || customTheme?.secondary?.main
+          !== userThemeData.customTheme?.secondary?.main
+        ) setCustomTheme(userThemeData.customTheme);
         if (colorBlendPercent !== userThemeData.colorBlendPercent) {
           setColorBlendPercent(userThemeData.colorBlendPercent);
         }
@@ -71,9 +75,13 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
 
   useEffect(() => {
     // ref to boolean value prevents the useEffect from running on the first render
+    console.log({
+      isDarkMode, themeName, customTheme, colorBlendPercent,
+    });
     if (!isMounted.current) {
       isMounted.current = true;
     } else {
+      console.log('IS THIS FIRRING?');
       const updatedTheme = {
         isDarkMode, themeName, customTheme, colorBlendPercent,
       };
