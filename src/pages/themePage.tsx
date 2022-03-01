@@ -35,7 +35,7 @@ export default function ThemePage() {
     },
   } = useMUITheme();
   const {
-    setCustomTheme,
+    dispatchCustomTheme,
     dispatchColorBlendPercent,
     colorBlendPercent,
   } = useTheme();
@@ -101,19 +101,24 @@ export default function ThemePage() {
   };
 
   const handleSubmitCustomTheme = () => {
-    setCustomTheme({ primary: cPrimary, secondary: cSecondary });
+    dispatchCustomTheme({ primary: cPrimary, secondary: cSecondary });
   };
 
   const handleResetCustomColors = () => {
-    setCustomPrimaryColor(primary.main);
-    setCustomSecondaryColor(secondary.main);
+    if (lightThemeColors?.primary?.main && lightThemeColors.secondary?.main) {
+      setCustomPrimaryColor(lightThemeColors.primary.main);
+      setCustomSecondaryColor(lightThemeColors.secondary.main);
+    }
   };
+
+  useEffect(() => {
+    setCustomDarkThemeColors(makeDarkModeColors(customPrimaryColor, customSecondaryColor));
+  }, [customPrimaryColor, customSecondaryColor]);
 
   const handleSwapCustomColors = () => {
     const tempPrimary = customPrimaryColor;
     setCustomPrimaryColor(customSecondaryColor);
     setCustomSecondaryColor(tempPrimary);
-    setCustomDarkThemeColors(makeDarkModeColors(customSecondaryColor, tempPrimary));
   };
 
   // TODO: Clean up / organize all of these grids and boxes

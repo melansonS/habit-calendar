@@ -15,6 +15,7 @@ export const unCheckToday = (
     },
     currentStreak: user.currentStreak ? user.currentStreak - 1 : 0,
     longestStreak: checkedDaysInCurrentMonth.includes(yesterdayAsNumber) ? user.longestStreak - 1 : user.longestStreak,
+    totalDays: user.totalDays - 1,
   };
   return filteredUser;
 };
@@ -33,6 +34,7 @@ export const checkToday = (
     },
     currentStreak: user.currentStreak + 1,
     longestStreak: user.longestStreak < user.currentStreak + 1 ? user.currentStreak + 1 : user.longestStreak,
+    totalDays: user.totalDays + 1,
   };
   return updatedUser;
 };
@@ -46,6 +48,7 @@ export const newMonth = (user:IUser, currentYearMonth: string, today: number):IU
     },
     currentStreak: user.currentStreak + 1,
     longestStreak: user.longestStreak < user.currentStreak + 1 ? user.currentStreak + 1 : user.longestStreak,
+    totalDays: user.totalDays + 1,
   };
   return updatedUSer;
 };

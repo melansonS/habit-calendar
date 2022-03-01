@@ -10,8 +10,8 @@ import { useUser } from './userContext';
 
 interface IThemeContext {
   dispatchThemeName: React.Dispatch<React.SetStateAction<ThemeNamesEnum>>;
-  dispatchColorBlendPercent: React.Dispatch<React.SetStateAction<number>>
-  setCustomTheme: React.Dispatch<React.SetStateAction<Partial<ITheme> | null>>;
+  dispatchColorBlendPercent: React.Dispatch<React.SetStateAction<number>>;
+  dispatchCustomTheme: (newCustomTheme:Partial<ITheme>) => void;
   toggleDarkMode: () => void;
   themeName: ThemeNamesEnum;
   colorBlendPercent: number
@@ -23,7 +23,7 @@ interface IThemeContext {
 export const ThemeContext = createContext<IThemeContext>({
   dispatchThemeName: () => {},
   dispatchColorBlendPercent: () => {},
-  setCustomTheme: () => {},
+  dispatchCustomTheme: () => {},
   toggleDarkMode: () => {},
   themeName: ThemeNamesEnum.RED,
   colorBlendPercent: BLEND_PERCENT,
@@ -75,13 +75,9 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
 
   useEffect(() => {
     // ref to boolean value prevents the useEffect from running on the first render
-    console.log({
-      isDarkMode, themeName, customTheme, colorBlendPercent,
-    });
     if (!isMounted.current) {
       isMounted.current = true;
     } else {
-      console.log('IS THIS FIRRING?');
       const updatedTheme = {
         isDarkMode, themeName, customTheme, colorBlendPercent,
       };
@@ -103,7 +99,12 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
   );
 
   const themeContextValue = useMemo(() => ({
-    setCustomTheme,
+    dispatchCustomTheme: (newCustomTheme:Partial<ITheme>) => {
+      if (newCustomTheme?.primary?.main !== customTheme?.primary?.main
+        && newCustomTheme?.secondary?.main !== customTheme?.secondary?.main) {
+        setCustomTheme(newCustomTheme);
+      }
+    },
     dispatchThemeName: (name: React.SetStateAction<ThemeNamesEnum>) => {
       setCustomTheme(null);
       setThemeName(name);
