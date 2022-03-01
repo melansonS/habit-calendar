@@ -16,7 +16,7 @@ import { transientConfig } from '../styledComponentTests';
 
 interface ICellsProps {
   currentMonth: Date
-  today: Date
+  today: number
   isDarkMode: boolean
   checkedDays: number[]
   handleCellClick: (day: number) => void
@@ -79,7 +79,7 @@ export default function Cells({
         secondary={secondary.main}
         isChecked={checkedDays.includes(day)}
         isDarkMode={isDarkMode}
-        isToday={today.getTime() === day}
+        isToday={today === day}
         key={`col-${index % 7}-${day}`}
         onClick={() => handleCellClick(day)}
         contrastText={primary.contrastText}

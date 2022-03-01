@@ -20,6 +20,7 @@ import { useUser } from '../../context/userContext';
 
 // @ts-ignore
 import audio from '../../audio/mixkit-cool-interface-click-tone-2568.wav';
+import { checkToday, newMonth, unCheckToday } from '../../utils/userUtils';
 // import audio from '../../audio/mixkit-single-key-press-in-a-laptop-2541.wav';
 // import audio from '../../audio/mixkit-slide-click-1130.wav';
 // import audio from '../../audio/mixkit-plastic-bubble-click-1124.wav';
@@ -31,15 +32,14 @@ interface ICalendarProps {
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentDisplayMonth, setCurrentDisplayMonth] = useState(new Date());
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
-  const today = startOfDay(new Date());
+  const today = startOfDay(new Date()).getTime();
   const yearMonth = `${getYear(currentDisplayMonth)}${getMonth(currentDisplayMonth)}`;
   const { user, setUser } = useUser();
 
   useEffect(() => {
     if (!user || !user.checkedDays) return;
-    const todayAsNumber = today.getTime();
     const checkedDays = user?.checkedDays[yearMonth];
-    if (checkedDays?.includes(todayAsNumber)) {
+    if (checkedDays?.includes(today)) {
       setIsTodayChecked(true);
     }
   }, []);
@@ -52,47 +52,21 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
 
   const handleToggleToday = () => {
     if (!user || !user.checkedDays) return;
-    const todayAsNumber = today.getTime();
-    const yesterdayAsNumber = subDays(today, 1).getTime();
 
+    const yesterdayAsNumber = subDays(today, 1).getTime();
     const currentYearMonth = `${getYear(today)}${getMonth(today)}`;
     const checkedDaysInCurrentMonth = user?.checkedDays[currentYearMonth];
+
     if (!checkedDaysInCurrentMonth) {
-      setUser({
-        ...user,
-        checkedDays: {
-          ...user.checkedDays,
-          [currentYearMonth]: [todayAsNumber],
-        },
-        currentStreak: 1,
-        longestStreak: user.longestStreak < 1 ? 1 : user.longestStreak,
-      });
+      setUser(newMonth(user, currentYearMonth, today));
       return;
     }
-    if (checkedDaysInCurrentMonth?.includes(todayAsNumber)) {
-      setUser({
-        ...user,
-        checkedDays: {
-          ...user.checkedDays,
-          [currentYearMonth]: checkedDaysInCurrentMonth.filter((d:number) => d !== todayAsNumber),
-        },
-        currentStreak: user.currentStreak ? user.currentStreak - 1 : 0,
-        longestStreak: checkedDaysInCurrentMonth
-          .includes(yesterdayAsNumber) ? user.longestStreak - 1 : user.longestStreak,
-      });
+    if (checkedDaysInCurrentMonth?.includes(today)) {
+      setUser(unCheckToday(user, currentYearMonth, checkedDaysInCurrentMonth, today, yesterdayAsNumber));
       setIsTodayChecked(false);
     } else {
       playAudio();
-      setUser({
-        ...user,
-        checkedDays: {
-          ...user.checkedDays,
-          [currentYearMonth]: [...checkedDaysInCurrentMonth, todayAsNumber],
-        },
-        currentStreak: user.currentStreak ? user.currentStreak + 1 : 1,
-        longestStreak: user.longestStreak < user.currentStreak + 1 ? user.currentStreak + 1 : user.longestStreak,
-
-      });
+      setUser(checkToday(user, currentYearMonth, checkedDaysInCurrentMonth, today));
       setIsTodayChecked(true);
     }
   };
@@ -102,7 +76,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const handleJumpToCurrentMonth = () => {
-    setCurrentDisplayMonth(today);
+    setCurrentDisplayMonth(new Date(today));
   };
 
   const nextMonth = () => {
@@ -150,7 +124,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         isDarkMode={isDarkMode}
         handleCellClick={handleCellClick}
       />
-      {today.getMonth() === currentDisplayMonth.getMonth()
+      {new Date(today).getMonth() === currentDisplayMonth.getMonth()
         ? (
           <Typography align="center" variant="h6">
             Mark today as
