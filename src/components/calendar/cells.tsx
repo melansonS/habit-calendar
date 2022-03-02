@@ -64,8 +64,8 @@ export default function Cells({
     if (currentMonthIndex !== getMonth(day)) {
       return (
         <Box
-          style={{
-            height: '5rem',
+          sx={{
+            height: { xs: '3rem', sm: '5rem' },
             position: 'relative',
           }}
           key={`col-${index % 7}-${day}-out-of-month`}
@@ -83,6 +83,7 @@ export default function Cells({
         key={`col-${index % 7}-${day}`}
         onClick={() => handleCellClick(day)}
         contrastText={primary.contrastText}
+        sx={{ height: { xs: '3rem', sm: '5rem' } }}
       >
         {checkedDays.includes(day) && (
         <Grow
@@ -95,7 +96,14 @@ export default function Cells({
           />
         </Grow>
         )}
-        <Typography style={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
+        <Typography
+          sx={{
+            top: { xs: '0px', sm: '0.3rem' },
+            right: { xs: '3px', sm: '0.65rem' },
+            fontSize: { xs: '.75rem', sm: 'inherit' },
+            position: 'absolute',
+          }}
+        >
           {formattedDate}
         </Typography>
       </Cell>

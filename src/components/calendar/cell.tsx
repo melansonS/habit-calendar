@@ -17,7 +17,6 @@ const Cell = styled(Box)`
   box-sizing: border-box;
   color: ${({ contrastText, isChecked }: ICellProps) => (isChecked ? contrastText : 'inherit')};
   display: flex;
-  height: 5rem;
   justify-content: center;
   position: relative;
   transition: background-color 0.4s ease-out;

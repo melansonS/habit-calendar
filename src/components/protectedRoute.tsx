@@ -6,7 +6,8 @@ function ProtectedRoute({ element }: {element: JSX.Element}) {
   const { isAuthenticated } = useAuth0();
   if (isAuthenticated) {
     return element;
-  } return <Navigate to="/" />;
+  }
+  return <Navigate to="/" />;
 }
 
 export default ProtectedRoute;

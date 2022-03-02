@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
-  Skeleton, Box,
+  Skeleton,
 } from '@mui/material';
 
 import Calendar from '../components/calendar/calendar';
@@ -12,8 +12,6 @@ export default function CalendarPage() {
   const { isDarkMode } = useTheme();
   if (isLoading) return (<Skeleton animation="pulse" sx={{ p: 2 }} style={{ maxWidth: '100%' }} />);
   return (
-    <Box p={2}>
-      <Calendar isDarkMode={isDarkMode} />
-    </Box>
+    <Calendar isDarkMode={isDarkMode} />
   );
 }

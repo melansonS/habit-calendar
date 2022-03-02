@@ -12,6 +12,7 @@ export default function LoginButton() {
           redirectUri: `${window.location.origin}/calendar`,
         })}
         color="secondary"
+        variant="contained"
       >
         Jump in!
         {' '}

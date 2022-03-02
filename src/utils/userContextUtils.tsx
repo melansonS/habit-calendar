@@ -10,7 +10,7 @@ interface IAPIResponse {
 }
 
 interface IFetchResponse extends IAPIResponse {
-  alert?: IAlert
+  alert: IAlert
 }
 
 export const postUpdatedUser = async (user: IUser, accessToken: string) => {
@@ -35,7 +35,7 @@ export const postUpdatedUser = async (user: IUser, accessToken: string) => {
     };
     return response;
   } catch (err) {
-    return {
+    const response:IFetchResponse = {
       success: false,
       user: null,
       alert: {
@@ -43,7 +43,8 @@ export const postUpdatedUser = async (user: IUser, accessToken: string) => {
         message: 'Unable to reach server, please try again later...',
         id: `server-error${now()}`,
       },
-    } as IFetchResponse;
+    };
+    return response;
   }
 };
 
@@ -78,3 +79,22 @@ export async function fetchUserData(accessToken:string) {
     return response;
   }
 }
+
+export const pingServer = async ():Promise<IFetchResponse> => {
+  try {
+    const res = await fetch(`${URL}/ping`);
+    const json = await res.json();
+    return json;
+  } catch (err) {
+    const response:IFetchResponse = {
+      success: false,
+      user: null,
+      alert: {
+        type: 'error',
+        message: 'Unable to reach server, please try again later...',
+        id: `server-error${now()}`,
+      },
+    };
+    return response;
+  }
+};

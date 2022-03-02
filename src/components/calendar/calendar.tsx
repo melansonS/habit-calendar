@@ -99,15 +99,23 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   }
 
   return (
-    <Paper elevation={6} sx={{ m: { xs: 1, md: 4, lg: 8 }, p: 8 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+    <Paper
+      elevation={4}
+      sx={{
+        p: { xs: 4, sm: 8 },
+      }}
+    >
+      <Box sx={{
+        display: 'flex', justifyContent: 'space-around', alignItems: 'center', pb: 4,
+      }}
+      >
         <Box>
           <Button variant="contained" onClick={prevMonth}>
             <ChevronLeftIcon />
           </Button>
         </Box>
         <Box>
-          <Typography variant="h4">
+          <Typography textAlign="center" variant="h4">
             {format(currentDisplayMonth, headerDateFormat)}
           </Typography>
         </Box>

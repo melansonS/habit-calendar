@@ -123,12 +123,12 @@ export default function ThemePage() {
 
   // TODO: Clean up / organize all of these grids and boxes
   return (
-    <div>
-      <Typography component="header" variant="h3" sx={{ pt: 6, textAlign: 'center' }}>
+    <Box pb={2}>
+      <Typography component="header" variant="h3" sx={{ pt: 4, textAlign: 'center' }}>
         Theme Colors
       </Typography>
-      <Paper sx={{ m: 3 }}>
-        <Typography variant="h5">Current Theme</Typography>
+      <Paper elevation={2} sx={{ m: 2, p: 2 }}>
+        <Typography variant="h4">Current Theme</Typography>
         <Box p={2}>
           <ThemeSelector />
         </Box>
@@ -169,8 +169,8 @@ export default function ThemePage() {
 
         </Grid>
       </Paper>
-      <Paper sx={{ m: 3 }}>
-        <Typography variant="h5">created Theme...</Typography>
+      <Paper elevation={2} sx={{ m: 2, p: 2 }}>
+        <Typography variant="h4">Create Cutsom Theme</Typography>
         <Box>
           <Box sx={{ pl: 2, display: 'flex', alignItems: 'center' }}>
             <Typography variant="h6">Primary</Typography>
@@ -198,7 +198,7 @@ export default function ThemePage() {
             Reset
           </Button>
         </Box>
-        <Box sx={{ m: 1, width: '45%' }}>
+        <Box sx={{ m: 1, width: { xs: '90%', sm: '45%' } }}>
           <Slider
             aria-label="Color Blend Percentage"
             value={colorBlendPercent}
@@ -209,9 +209,9 @@ export default function ThemePage() {
             onChange={(e, value) => handleColorBlendChange(value as number)}
           />
         </Box>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: { sm: 'flex' } }}>
 
-          <Box sx={{ width: '45%' }}>
+          <Box>
             <Typography variant="h6" sx={{ fontWeight: 'bold' }} p={2}>
               Light theme!
             </Typography>
@@ -239,7 +239,7 @@ export default function ThemePage() {
                 secondary={cSecondary.main}
                 isChecked
                 isDarkMode={false}
-                style={{ width: '5rem', borderRadius: '5px' }}
+                sx={{ width: '5rem', height: '5rem', borderRadius: '5px' }}
                 m={2}
                 contrastText={lightThemeColors?.primary?.contrastText || primary.contrastText}
               >
@@ -252,7 +252,7 @@ export default function ThemePage() {
                     fontSize="large"
                   />
                 </Grow>
-                <Typography style={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
+                <Typography sx={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
                   {1}
                 </Typography>
               </Cell>
@@ -260,7 +260,7 @@ export default function ThemePage() {
           </Box>
           {customDarkThemeColors?.primary?.main && customDarkThemeColors?.secondary?.main
           && (
-          <Box sx={{ width: '45%' }}>
+          <Box>
             <Typography variant="h6" sx={{ fontWeight: 'bold' }} p={2}>
               Dark theme!
             </Typography>
@@ -288,7 +288,7 @@ export default function ThemePage() {
                 secondary={customDarkThemeColors.secondary.main}
                 isChecked
                 isDarkMode
-                style={{ width: '5rem', borderRadius: '5px' }}
+                sx={{ width: '5rem', height: '5rem', borderRadius: '5px' }}
                 m={2}
                 contrastText={customDarkThemeColors.primary.contrastText || primary.contrastText}
               >
@@ -301,7 +301,7 @@ export default function ThemePage() {
                     fontSize="large"
                   />
                 </Grow>
-                <Typography style={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
+                <Typography sx={{ position: 'absolute', top: '0.5rem', right: '0.75rem' }}>
                   {1}
                 </Typography>
               </Cell>
@@ -310,6 +310,6 @@ export default function ThemePage() {
           )}
         </Box>
       </Paper>
-    </div>
+    </Box>
   );
 }

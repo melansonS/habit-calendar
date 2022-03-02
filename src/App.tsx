@@ -32,7 +32,11 @@ function App() {
   const { alerts } = useAlert();
 
   return (
-    <Container sx={{ pt: 15 }} maxWidth="xl" className="App">
+    <Container
+      sx={{ pt: { xs: 13, sm: 15 }, pb: 2 }}
+      maxWidth="xl"
+      className="App"
+    >
       <CssBaseline />
       <Paper>
         <Router>
