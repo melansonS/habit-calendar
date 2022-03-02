@@ -11,7 +11,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Auth0Provider
       domain="dev-yjll6etc.us.auth0.com"
-      clientId="OhtrXOukQ9lk89dTkAuALWAOuRkxM3Rr"
+      clientId={
+        process.env.NODE_ENV === 'production' ? 'lYXWz5miZPXE4KDbHpxt8uxraBC4cxxY' : 'OhtrXOukQ9lk89dTkAuALWAOuRkxM3Rr'
+      }
       redirectUri={window.location.origin}
       audience="hcAuth"
       scope="read:current_user"

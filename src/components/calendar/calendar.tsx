@@ -59,6 +59,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
 
     if (!checkedDaysInCurrentMonth) {
       setUser(newMonth(user, currentYearMonth, today));
+      setIsTodayChecked(true);
       return;
     }
     if (checkedDaysInCurrentMonth?.includes(today)) {
