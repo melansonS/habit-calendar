@@ -101,7 +101,7 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
   const themeContextValue = useMemo(() => ({
     dispatchCustomTheme: (newCustomTheme:Partial<ITheme>) => {
       if (newCustomTheme?.primary?.main !== customTheme?.primary?.main
-        && newCustomTheme?.secondary?.main !== customTheme?.secondary?.main) {
+        || newCustomTheme?.secondary?.main !== customTheme?.secondary?.main) {
         setCustomTheme(newCustomTheme);
       }
     },

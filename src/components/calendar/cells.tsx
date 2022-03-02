@@ -103,14 +103,13 @@ export default function Cells({
   });
 
   return (
-    <CellsContainer>
+    <CellsContainer pb={2}>
       <Box sx={{
         display: 'grid',
         gridTemplateColumns: 'repeat(7, 1fr)',
       }}
       >
         {dayCells}
-
       </Box>
     </CellsContainer>
   );

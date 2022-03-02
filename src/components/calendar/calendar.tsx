@@ -98,7 +98,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   }
 
   return (
-    <Paper elevation={6} sx={{ p: 8, m: 8 }}>
+    <Paper elevation={6} sx={{ m: { xs: 1, md: 4, lg: 8 }, p: 8 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
         <Box>
           <Button variant="contained" onClick={prevMonth}>
@@ -149,23 +149,34 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
             </Button>
           </Typography>
         )}
-      <Box pt={2}>
-        <Typography>
-          {`you've been at it for ${user.totalDays} day${user.totalDays !== 1 ? 's' : ''}!`}
+      <Box pt={2} textAlign="center">
+        <Typography variant="h6">
+          You&apos;ve been at it for
+          <Typography display="inline" color="primary" fontSize="1.1em">
+            <strong>
+              {' '}
+              {user.totalDays}
+              {' '}
+            </strong>
+          </Typography>
+          {`day${user.totalDays !== 1 ? 's' : ''}!`}
         </Typography>
-        {user.currentStreak > 2 && (
-        <Typography>
-          You&apos;re streaking baby!
-          {user.currentStreak}
-          <LocalFireDepartmentIcon />
-        </Typography>
-        )}
-        <Typography>
+        <Typography variant="h6" display="flex" justifyContent="center">
           Longest Streak:
           {' '}
           {user.longestStreak}
-          <LocalFireDepartmentIcon />
+          <LocalFireDepartmentIcon color="primary" />
         </Typography>
+        {user.currentStreak > 2 && (
+        <Typography variant="h6" display="flex" justifyContent="center">
+          You&apos;re streaking baby!
+          {' '}
+          {user.currentStreak}
+          {' '}
+          in a row!
+          <LocalFireDepartmentIcon color="primary" />
+        </Typography>
+        )}
       </Box>
     </Paper>
   );

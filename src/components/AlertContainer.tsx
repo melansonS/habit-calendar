@@ -1,22 +1,15 @@
 import React from 'react';
-import { AlertColor, Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import TimedAlert from './TimedAlert';
 import { useAlert } from '../context/alertContext';
-import now from '../utils/useNow';
 
 function AlertContainer() {
-  const { alerts, addAlert, dismissAlert } = useAlert();
-
-  const handleAddAlert = (type:AlertColor, message:string) => {
-    addAlert({ type, message, id: `${message}${now()}` });
-  };
+  const { alerts, dismissAlert } = useAlert();
 
   const handleDismissAlert = (idString:string) => {
     dismissAlert(idString);
   };
 
-  // TODO: remove this..
-  const typeArr: AlertColor[] = ['error', 'info', 'success'];
   return (
     <Box
       style={{
@@ -36,9 +29,6 @@ function AlertContainer() {
           dismiss={handleDismissAlert}
         />
       ))}
-      <Button onClick={() => handleAddAlert(typeArr[Math.floor(Math.random() * 3)], 'added Alert!  !')}>
-        Add alert.
-      </Button>
     </Box>
   );
 }

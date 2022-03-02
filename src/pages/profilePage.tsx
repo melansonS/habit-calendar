@@ -59,7 +59,7 @@ function ColorTabs() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box>
       <Tabs
         value={value}
         onChange={handleChange}
