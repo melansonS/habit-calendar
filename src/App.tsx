@@ -34,7 +34,7 @@ function App() {
   return (
     <Container
       sx={{ pt: { xs: 13, sm: 15 }, pb: 2 }}
-      maxWidth="xl"
+      maxWidth="md"
       className="App"
     >
       <CssBaseline />
