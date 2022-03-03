@@ -2,16 +2,16 @@ import { PaletteColor, Color } from '@mui/material';
 import { TypeText } from '@mui/material/styles/createPalette';
 import { IColor } from './colorTypes';
 
-function ColorToHex(color:number): string {
+function colorToHex(color:number): string {
   const hexadecimal = color.toString(16);
   return hexadecimal.length === 1 ? `0${hexadecimal}` : hexadecimal;
 }
 
-function AlphaToHex(alpha: number): string {
+function alphaToHex(alpha: number): string {
   return (Math.round(alpha * 255)).toString(16);
 }
 
-function HexToRGB(hex: string): {r:number, g: number, b:number, a?: number} {
+export function hexToRGB(hex: string): {r:number, g: number, b:number, a?: number} {
   if (hex.length === 4) {
     return { r: parseInt(hex[1].repeat(2), 16), g: parseInt(hex[2].repeat(2), 16), b: parseInt(hex[3].repeat(2), 16) };
   } if (hex.length === 7) {
@@ -28,8 +28,19 @@ function HexToRGB(hex: string): {r:number, g: number, b:number, a?: number} {
 }
 
 export function stripRGBA(s: string) {
-  const [r, g, b, a] = s.slice(s.indexOf('(') + 1, s.indexOf(')')).split(', ');
+  const [r, g, b, a] = s.slice(s.indexOf('(') + 1, s.indexOf(')')).split(/, |,/);
 
+  let invalid = false;
+  [r, g, b].forEach((value) => {
+    if (Number.isNaN(parseInt(value, 10))) {
+      invalid = true;
+    }
+  });
+
+  if (invalid) {
+    console.error('hey! something is wrong with the colors!', { s });
+    return { r: 255, g: 0, b: 0 }; // Red for Error
+  }
   return {
     r: parseInt(r, 10),
     g: parseInt(g, 10),
@@ -42,12 +53,12 @@ export const BLEND_PERCENT = 0.02;
 export const BLEND_STEP = 0.04;
 
 export function ConvertRGBAtoHex(r:number, g:number, b:number, a?: number):string {
-  return `#${ColorToHex(r)}${ColorToHex(g)}${ColorToHex(b)}${a ? AlphaToHex(a) : ''}`;
+  return `#${colorToHex(r)}${colorToHex(g)}${colorToHex(b)}${a ? alphaToHex(a) : ''}`;
 }
 
 export default function simpleColorBlend(c1 : string, c2 : string, percentage = BLEND_PERCENT) {
-  const color1 = c1.includes('rgb') ? stripRGBA(c1) : HexToRGB(c1);
-  const color2 = c2.includes('rgb') ? stripRGBA(c2) : HexToRGB(c2);
+  const color1 = c1.includes('rgb') ? stripRGBA(c1) : hexToRGB(c1);
+  const color2 = c2.includes('rgb') ? stripRGBA(c2) : hexToRGB(c2);
   const a = color1.a || color2.a;
   let p = percentage;
   if (p <= 0 || p >= 1) { p = 0.2; }
@@ -65,7 +76,7 @@ export default function simpleColorBlend(c1 : string, c2 : string, percentage = 
 const DARK_MODE_SATURATION = 0.6;
 export function desaturateColor(color: string) {
   // https://stackoverflow.com/questions/13348129/using-native-javascript-to-desaturate-a-colour/13355255
-  const col = color.includes('rgb') ? stripRGBA(color) : HexToRGB(color);
+  const col = color.includes('rgb') ? stripRGBA(color) : hexToRGB(color);
   const sat = DARK_MODE_SATURATION;
   // https:// en.m.wikipedia.org/wiki/Grayscale#Luma_coding_in_video_systems
   const gray = col.r * 0.3086 + col.g * 0.6094 + col.b * 0.0820;

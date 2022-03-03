@@ -99,12 +99,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   }
 
   return (
-    <Paper
-      elevation={4}
-      sx={{
-        p: { xs: 4, sm: 8 },
-      }}
-    >
+    <Paper sx={{ p: { xs: 4, sm: 8 }, pt: { xs: 2, sm: 4 } }}>
       <Box>
         <Box sx={{ textAlign: 'center' }}>
           <Typography textAlign="center" sx={{ typography: { xs: 'h5', sm: 'h4' } }}>
