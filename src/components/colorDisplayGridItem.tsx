@@ -19,7 +19,6 @@ const ColoredBox = styled(Box)((props: IColoredBoxProps) => ({
 interface IColorDisplayGridItemProps {
   xs: number
   md?: number
-  lg?: number
   color: {
     name: string;
     value: any;
@@ -27,10 +26,10 @@ interface IColorDisplayGridItemProps {
 }
 
 export default function ColorDisplayGridItem({
-  xs, md, lg, color,
+  xs, md, color,
 }: IColorDisplayGridItemProps) {
   return (
-    <Grid item xs={xs} md={md} lg={lg}>
+    <Grid item xs={xs} md={md}>
       <Card>
         <ColoredBox sx={{ p: 2 }} bgColor={color?.value} />
         <Box>
@@ -45,5 +44,4 @@ export default function ColorDisplayGridItem({
 
 ColorDisplayGridItem.defaultProps = {
   md: 1,
-  lg: 1,
 };

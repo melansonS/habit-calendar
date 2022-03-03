@@ -222,7 +222,6 @@ export default function ThemePage() {
                   color={color}
                   xs={4}
                   md={4}
-                  lg={4}
                 />
               ))}
               {destructurePaletteColor(cSecondary).map((color) => (
@@ -231,7 +230,6 @@ export default function ThemePage() {
                   color={color}
                   xs={4}
                   md={4}
-                  lg={4}
                 />
               ))}
               <Cell
@@ -271,7 +269,6 @@ export default function ThemePage() {
                   color={color}
                   xs={4}
                   md={4}
-                  lg={4}
                 />
               ))}
               {destructurePaletteColor(customDarkThemeColors.secondary).map((color) => (
@@ -280,7 +277,6 @@ export default function ThemePage() {
                   color={color}
                   xs={4}
                   md={4}
-                  lg={4}
                 />
               ))}
               <Cell

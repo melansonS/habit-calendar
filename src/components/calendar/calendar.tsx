@@ -105,21 +105,20 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         p: { xs: 4, sm: 8 },
       }}
     >
-      <Box sx={{
-        display: 'flex', justifyContent: 'space-around', alignItems: 'center', pb: 4,
-      }}
-      >
-        <Box>
+      <Box>
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography textAlign="center" sx={{ typography: { xs: 'h5', sm: 'h4' } }}>
+            <strong>
+              {format(currentDisplayMonth, headerDateFormat)}
+            </strong>
+          </Typography>
+        </Box>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}
+        >
           <Button variant="contained" onClick={prevMonth}>
             <ChevronLeftIcon />
           </Button>
-        </Box>
-        <Box>
-          <Typography textAlign="center" variant="h4">
-            {format(currentDisplayMonth, headerDateFormat)}
-          </Typography>
-        </Box>
-        <Box>
           <Button variant="contained" onClick={nextMonth}>
             <ChevronRightIcon />
           </Button>
@@ -134,6 +133,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         handleCellClick={handleCellClick}
       />
       {new Date(today).getMonth() === currentDisplayMonth.getMonth()
+      && new Date(today).getFullYear() === currentDisplayMonth.getFullYear()
         ? (
           <Typography align="center" variant="h6">
             Mark today as
@@ -142,7 +142,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
               variant="contained"
               onClick={debouncedToggleToday}
             >
-              {isTodayChecked ? 'not Completed..' : 'Complete!'}
+              {isTodayChecked ? ' Incomplete' : 'Complete!'}
             </Button>
           </Typography>
         )

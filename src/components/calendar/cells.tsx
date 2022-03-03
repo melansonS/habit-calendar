@@ -43,7 +43,9 @@ export const ResizableIcon = styled(SpaOutlinedIcon, transientConfig)`
 `;
 
 export default function Cells({
-  currentMonth, today, isDarkMode,
+  currentMonth,
+  today,
+  isDarkMode,
   checkedDays,
   handleCellClick,
 }: ICellsProps) {
