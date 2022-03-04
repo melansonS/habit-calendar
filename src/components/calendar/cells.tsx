@@ -20,6 +20,7 @@ interface ICellsProps {
   isDarkMode: boolean
   checkedDays: number[]
   handleCellClick: (day: number) => void
+  timezoneOffset: number
 }
 
 interface IResizableIcon {
@@ -48,6 +49,7 @@ export default function Cells({
   isDarkMode,
   checkedDays,
   handleCellClick,
+  timezoneOffset,
 }: ICellsProps) {
   const { palette: { primary, secondary } } = useMUITheme();
   const monthStart = startOfMonth(currentMonth);
@@ -74,20 +76,21 @@ export default function Cells({
         />
       );
     }
+
     return (
       <Cell
         m={0.3}
         primary={primary.main}
         secondary={secondary.main}
-        isChecked={checkedDays.includes(day)}
+        isChecked={checkedDays.includes(day - (timezoneOffset * 60 * 1000))}
         isDarkMode={isDarkMode}
-        isToday={today === day}
+        isToday={today + (timezoneOffset * 60 * 1000) === day}
         key={`col-${index % 7}-${day}`}
         onClick={() => handleCellClick(day)}
         contrastText={primary.contrastText}
         sx={{ height: { xs: '3rem', sm: '5rem' } }}
       >
-        {checkedDays.includes(day) && (
+        {checkedDays.includes(day - (timezoneOffset * 60 * 1000)) && (
         <Grow
           in
           timeout={1000}

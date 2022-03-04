@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
   format, addMonths, subMonths,
-  startOfDay,
   getMonth,
   getYear,
-  subDays,
+  startOfYesterday,
+  startOfToday,
 } from 'date-fns';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -32,7 +32,8 @@ interface ICalendarProps {
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentDisplayMonth, setCurrentDisplayMonth] = useState(new Date());
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
-  const today = startOfDay(new Date()).getTime();
+  const timezoneOffset = new Date().getTimezoneOffset();
+  const today = startOfToday().getTime() - (timezoneOffset * 60 * 1000);
   const yearMonth = `${getYear(currentDisplayMonth)}${getMonth(currentDisplayMonth)}`;
   const { user, setUser } = useUser();
 
@@ -53,7 +54,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   const handleToggleToday = () => {
     if (!user || !user.checkedDays) return;
 
-    const yesterdayAsNumber = subDays(today, 1).getTime();
+    const yesterdayAsNumber = startOfYesterday().getTime() - (timezoneOffset * 60 * 1000);
     const currentYearMonth = `${getYear(today)}${getMonth(today)}`;
     const checkedDaysInCurrentMonth = user?.checkedDays[currentYearMonth];
 
@@ -73,7 +74,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const handleCellClick = (day: number) => {
-    console.log(yearMonth, day);
+    console.log(yearMonth, 'utc adjusted timestamp', day - (timezoneOffset * 60 * 1000));
   };
 
   const handleJumpToCurrentMonth = () => {
@@ -126,6 +127,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         today={today}
         isDarkMode={isDarkMode}
         handleCellClick={handleCellClick}
+        timezoneOffset={timezoneOffset}
       />
       {new Date(today).getMonth() === currentDisplayMonth.getMonth()
       && new Date(today).getFullYear() === currentDisplayMonth.getFullYear()

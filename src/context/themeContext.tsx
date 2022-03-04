@@ -77,7 +77,7 @@ export function ThemeContextProvider({ children } : {children: React.ReactNode})
     // ref to boolean value prevents the useEffect from running on the first render
     if (!isMounted.current) {
       isMounted.current = true;
-    } else {
+    } else if (user?.name !== 'Mr.Mock') {
       const updatedTheme = {
         isDarkMode, themeName, customTheme, colorBlendPercent,
       };
