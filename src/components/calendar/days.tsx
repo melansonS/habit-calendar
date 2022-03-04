@@ -33,7 +33,7 @@ export default function Days({ currentMonth }: IDaysProps) {
     <Box
       sx={{
         display: 'grid',
-        gap: 1,
+        gap: { xs: 0.5, sm: 1 },
         gridTemplateColumns: 'repeat(7, 1fr)',
       }}
       pt={2}

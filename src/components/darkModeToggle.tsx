@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import {
   useTheme as useMUITheme, Box, Tooltip,
 } from '@mui/material';
+import { debounce } from 'lodash';
 import { useTheme } from '../context/themeContext';
 import useBreakPoints from '../utils/useBreakPoint';
 import ColoredFab from './coloredFab';
@@ -13,12 +14,29 @@ export default function DarkModeToggle() {
   const { palette } = useMUITheme();
   const breakpoint = useBreakPoints();
 
+  const toggleRef = useRef(toggleDarkMode);
+  useEffect(() => {
+    toggleRef.current = toggleDarkMode;
+  }, [isDarkMode, toggleDarkMode]);
+
+  const debouncedToggleDarkMode = useRef(debounce(() => {
+    toggleRef.current();
+  }, 500)).current;
+
+  const handleToggleDarkMode = () => {
+    debouncedToggleDarkMode();
+  };
+
+  useEffect(() => () => {
+    debouncedToggleDarkMode.cancel();
+  });
+
   return (
     <Box sx={{ pr: 1 }}>
       <Tooltip title="Light / Dark Mode">
         <ColoredFab
           size={breakpoint === 'xs' ? 'small' : 'large'}
-          onClick={toggleDarkMode}
+          onClick={handleToggleDarkMode}
           color="secondary"
           $customBackgroundColor={palette.secondary.main}
           $customHoverColor={palette.secondary.light}

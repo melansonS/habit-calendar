@@ -38,7 +38,7 @@ export const ResizableIcon = styled(SpaOutlinedIcon, transientConfig)`
     flex-direction: column;
   }
   @media (min-width: 1200px) {
-    font-size: 50px;
+    font-size: 40px;
     flex-direction: column;
   }
 `;
@@ -79,7 +79,6 @@ export default function Cells({
 
     return (
       <Cell
-        m={0.3}
         primary={primary.main}
         secondary={secondary.main}
         isChecked={checkedDays.includes(day - (timezoneOffset * 60 * 1000))}
@@ -97,7 +96,7 @@ export default function Cells({
         >
           <ResizableIcon
             $color={secondary.main}
-            fontSize="large"
+            fontSize="medium"
           />
         </Grow>
         )}
@@ -120,6 +119,7 @@ export default function Cells({
       <Box sx={{
         display: 'grid',
         gridTemplateColumns: 'repeat(7, 1fr)',
+        gap: { xs: 0.5, sm: 1 },
       }}
       >
         {dayCells}

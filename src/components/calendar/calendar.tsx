@@ -167,22 +167,21 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
           </Typography>
           {`day${user.totalDays !== 1 ? 's' : ''}!`}
         </Typography>
+        {user.currentStreak > 2 && (
+        <Typography variant="h6" display="flex" justifyContent="center">
+          {user.currentStreak}
+          {' '}
+          days in a row! Keep it up
+          {' '}
+          <LocalFireDepartmentIcon color="primary" />
+        </Typography>
+        )}
         <Typography variant="h6" display="flex" justifyContent="center">
           Longest Streak:
           {' '}
           {user.longestStreak}
           <LocalFireDepartmentIcon color="primary" />
         </Typography>
-        {user.currentStreak > 2 && (
-        <Typography variant="h6" display="flex" justifyContent="center">
-          You&apos;re streaking baby!
-          {' '}
-          {user.currentStreak}
-          {' '}
-          in a row!
-          <LocalFireDepartmentIcon color="primary" />
-        </Typography>
-        )}
       </Box>
     </Paper>
   );
