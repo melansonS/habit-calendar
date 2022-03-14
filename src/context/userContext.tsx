@@ -50,7 +50,7 @@ export const UserContext = createContext<IUserContext>({
 });
 
 export function UserContextProvider({ children } : {children: React.ReactNode}) {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();
   const { addAlert } = useAlert();
   const [isUserLoading, setIsUserLoading] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState<string | undefined>(undefined);
@@ -75,7 +75,10 @@ export function UserContextProvider({ children } : {children: React.ReactNode}) 
           await fetchAccessToken();
         } else {
           const response = await fetchUserData(accessToken);
-          if (response.alert) addAlert(response.alert);
+          if (response.alert) {
+            addAlert(response.alert);
+          }
+          if (!response.success) logout();
           setUserValue(response.user);
           setIsUserLoading(false);
         }

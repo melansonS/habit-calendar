@@ -5,7 +5,7 @@ import { IUser } from './userContext';
 const mockUserData:IUser = {
   name: 'Mr.Mock',
   checkedDays: {
-    20221: [
+    '2022 Mar': [
       'Tue Mar 01 2022',
       'Wed Mar 02 2022',
       'Thu Mar 03 2022',
@@ -13,13 +13,13 @@ const mockUserData:IUser = {
     ],
   },
   isStreaking: false,
-  currentStreak: 2,
-  longestStreak: 2,
+  currentStreak: 0,
+  longestStreak: 0,
   totalDays: 0,
   theme: {
     colorBlendPercent: 0.14,
     customTheme: null,
-    isDarkMode: true,
+    isDarkMode: false,
     themeName: 'INDIGO' as ThemeNamesEnum,
   },
 };
@@ -27,7 +27,7 @@ const mockUserData:IUser = {
 const todayTimeStamp = startOfDay(new Date()).getTime();
 const yesterday = new Date(subDays(todayTimeStamp, 1).getTime()).toString().slice(0, 15);
 
-if (mockUserData?.checkedDays && !mockUserData.checkedDays['20221'].includes(yesterday)) {
+if (mockUserData?.checkedDays && !mockUserData.checkedDays['2022 Mar'].includes(yesterday)) {
   console.log('am not streaking');
   mockUserData.currentStreak = 0;
 }

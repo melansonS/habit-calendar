@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   format, addMonths, subMonths,
-  getMonth,
-  getYear,
   startOfYesterday,
   startOfToday,
 } from 'date-fns';
@@ -32,15 +30,15 @@ interface ICalendarProps {
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentDisplayMonth, setCurrentDisplayMonth] = useState(new Date());
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
-  const timezoneOffset = new Date().getTimezoneOffset();
   const today = Date().slice(0, 15);
-  const todayTimeStamp = startOfToday().getTime() - (timezoneOffset * 60 * 1000);
-  const yearMonth = `${getYear(currentDisplayMonth)}${getMonth(currentDisplayMonth)}`;
+  const todayTimeStamp = startOfToday().getTime();
+  const yearMonthFormat = 'yyyy LLL';
+  const currentYearMonthString = format(todayTimeStamp, yearMonthFormat); // month year as string
   const { user, setUser } = useUser();
 
   useEffect(() => {
     if (!user || !user.checkedDays) return;
-    const checkedDays = user?.checkedDays[yearMonth];
+    const checkedDays = user?.checkedDays[currentYearMonthString];
     if (checkedDays?.includes(today)) {
       setIsTodayChecked(true);
     }
@@ -55,27 +53,26 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   const handleToggleToday = () => {
     if (!user || !user.checkedDays) return;
 
-    const yesterdayAsNumber = startOfYesterday().getTime() - (timezoneOffset * 60 * 1000);
-    const currentYearMonth = `${getYear(todayTimeStamp)}${getMonth(todayTimeStamp)}`;
-    const checkedDaysInCurrentMonth = user?.checkedDays[currentYearMonth];
+    const yesterdayAsNumber = startOfYesterday().getTime();
+    const checkedDaysInCurrentMonth = user?.checkedDays[currentYearMonthString];
 
     if (!checkedDaysInCurrentMonth) {
-      setUser(newMonth(user, currentYearMonth, today));
+      setUser(newMonth(user, currentYearMonthString, today));
       setIsTodayChecked(true);
       return;
     }
     if (checkedDaysInCurrentMonth?.includes(today)) {
-      setUser(unCheckToday(user, currentYearMonth, checkedDaysInCurrentMonth, today, yesterdayAsNumber));
+      setUser(unCheckToday(user, currentYearMonthString, checkedDaysInCurrentMonth, today, yesterdayAsNumber));
       setIsTodayChecked(false);
     } else {
       playAudio();
-      setUser(checkToday(user, currentYearMonth, checkedDaysInCurrentMonth, today));
+      setUser(checkToday(user, currentYearMonthString, checkedDaysInCurrentMonth, today));
       setIsTodayChecked(true);
     }
   };
 
   const handleCellClick = (day: number) => {
-    console.log(yearMonth, 'utc adjusted timestamp', day - (timezoneOffset * 60 * 1000));
+    console.log(currentYearMonthString, 'utc adjusted timestamp', day);
   };
 
   const handleJumpToCurrentMonth = () => {
@@ -123,7 +120,8 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
       </Box>
       <Days currentMonth={currentDisplayMonth} />
       <Cells
-        checkedDays={user?.checkedDays && user.checkedDays[yearMonth] ? user.checkedDays[yearMonth] : []}
+        checkedDays={user?.checkedDays && user.checkedDays[currentYearMonthString]
+          ? user.checkedDays[currentYearMonthString] : []}
         currentMonth={currentDisplayMonth}
         today={today}
         isDarkMode={isDarkMode}

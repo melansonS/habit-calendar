@@ -49,8 +49,9 @@ export const postUpdatedUser = async (user: IUser, accessToken: string) => {
 };
 
 export async function fetchUserData(accessToken:string) {
+  const today = Date().slice(0, 15);
   try {
-    const res = await fetch(`${URL}/user`, {
+    const res = await fetch(`${URL}/user/${today}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -72,7 +73,7 @@ export async function fetchUserData(accessToken:string) {
       user: mockUserData,
       alert: {
         type: 'error',
-        message: 'Unable to get data from the server, using temp Mock Data!',
+        message: 'Unable to get data from the server, logging out',
         id: `error${now()}`,
       },
     };
