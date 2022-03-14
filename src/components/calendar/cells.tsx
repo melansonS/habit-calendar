@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   format,
   startOfWeek,
@@ -16,11 +16,10 @@ import { transientConfig } from '../styledComponentTests';
 
 interface ICellsProps {
   currentMonth: Date
-  today: number
+  today: string
   isDarkMode: boolean
-  checkedDays: number[]
+  checkedDays: string[]
   handleCellClick: (day: number) => void
-  timezoneOffset: number
 }
 
 interface IResizableIcon {
@@ -49,7 +48,6 @@ export default function Cells({
   isDarkMode,
   checkedDays,
   handleCellClick,
-  timezoneOffset,
 }: ICellsProps) {
   const { palette: { primary, secondary } } = useMUITheme();
   const monthStart = startOfMonth(currentMonth);
@@ -59,6 +57,12 @@ export default function Cells({
   const currentMonthIndex = currentMonth.getMonth();
 
   // TODO: memoize the array of Cell Nodes?
+
+  const checkedDaysAsStrings = useMemo(
+    () => checkedDays.map((day) => new Date(day).toString().slice(0, 15)),
+    [checkedDays],
+  );
+
   const allDatesOfMonth = eachDayOfInterval({ start: startDate, end: endDate });
   const allDayTimesOfMonth = allDatesOfMonth.map((date) => date.getTime());
   const dayCells = allDayTimesOfMonth.map((day, index) => {
@@ -81,15 +85,15 @@ export default function Cells({
       <Cell
         primary={primary.main}
         secondary={secondary.main}
-        isChecked={checkedDays.includes(day - (timezoneOffset * 60 * 1000))}
+        isChecked={checkedDaysAsStrings.includes(new Date(day).toString().slice(0, 15))}
         isDarkMode={isDarkMode}
-        isToday={today + (timezoneOffset * 60 * 1000) === day}
+        isToday={new Date(day).toString().slice(0, 15) === today}
         key={`col-${index % 7}-${day}`}
         onClick={() => handleCellClick(day)}
         contrastText={primary.contrastText}
         sx={{ height: { xs: '3rem', sm: '5rem' } }}
       >
-        {checkedDays.includes(day - (timezoneOffset * 60 * 1000)) && (
+        {checkedDaysAsStrings.includes(new Date(day).toString().slice(0, 15)) && (
         <Grow
           in
           timeout={1000}

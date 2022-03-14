@@ -5,15 +5,11 @@ import { IUser } from './userContext';
 const mockUserData:IUser = {
   name: 'Mr.Mock',
   checkedDays: {
-    20220: [
-      1641963600000,
-      1642050000000,
-    ],
     20221: [
-      1644728400000,
-      1644814800000,
-      1644901200000,
-      1644987600000,
+      'Tue Mar 01 2022',
+      'Wed Mar 02 2022',
+      'Thu Mar 03 2022',
+      'Sun Mar 13 2022',
     ],
   },
   isStreaking: false,
@@ -28,8 +24,8 @@ const mockUserData:IUser = {
   },
 };
 
-const today = startOfDay(new Date()).getTime();
-const yesterday = subDays(today, 1).getTime();
+const todayTimeStamp = startOfDay(new Date()).getTime();
+const yesterday = new Date(subDays(todayTimeStamp, 1).getTime()).toString().slice(0, 15);
 
 if (mockUserData?.checkedDays && !mockUserData.checkedDays['20221'].includes(yesterday)) {
   console.log('am not streaking');
@@ -49,10 +45,10 @@ let currentStreak = 0;
 
 if (allCheckedDays && allCheckedDays.includes(yesterday)) {
   // confirm that {yesterday - 1} is actually checked
-  let i = yesterday;
-  while (allCheckedDays.includes(i)) {
+  let i = 1;
+  while (allCheckedDays.includes(new Date(subDays(todayTimeStamp, i)).toString().slice(0, 15))) {
     currentStreak += 1;
-    i = subDays(i, 1).getTime();
+    i += 1;
   }
 }
 

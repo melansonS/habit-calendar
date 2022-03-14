@@ -3,18 +3,20 @@ import { IUser } from '../context/userContext';
 export const unCheckToday = (
   user:IUser,
   currentYearMonth:string,
-  checkedDaysInCurrentMonth:number[],
-  today:number,
+  checkedDaysInCurrentMonth:string[],
+  today:string,
   yesterdayAsNumber: number,
 ):IUser => {
   const filteredUser:IUser = {
     ...user,
     checkedDays: {
       ...user.checkedDays,
-      [currentYearMonth]: checkedDaysInCurrentMonth.filter((d: number) => d !== today),
+      [currentYearMonth]: checkedDaysInCurrentMonth.filter((d: string) => d !== today),
     },
     currentStreak: user.currentStreak ? user.currentStreak - 1 : 0,
-    longestStreak: checkedDaysInCurrentMonth.includes(yesterdayAsNumber) ? user.longestStreak - 1 : user.longestStreak,
+    longestStreak: checkedDaysInCurrentMonth
+      .includes(new Date(yesterdayAsNumber).toString()
+        .slice(0, 15)) ? user.longestStreak - 1 : user.longestStreak,
     totalDays: user.totalDays - 1,
   };
   return filteredUser;
@@ -23,8 +25,8 @@ export const unCheckToday = (
 export const checkToday = (
   user:IUser,
   currentYearMonth:string,
-  checkedDaysInCurrentMonth:number[],
-  today: number,
+  checkedDaysInCurrentMonth:string[],
+  today: string,
 ):IUser => {
   const updatedUser:IUser = {
     ...user,
@@ -39,7 +41,7 @@ export const checkToday = (
   return updatedUser;
 };
 
-export const newMonth = (user:IUser, currentYearMonth: string, today: number):IUser => {
+export const newMonth = (user:IUser, currentYearMonth: string, today: string):IUser => {
   const updatedUSer: IUser = {
     ...user,
     checkedDays: {

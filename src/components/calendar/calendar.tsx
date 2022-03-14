@@ -33,7 +33,8 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentDisplayMonth, setCurrentDisplayMonth] = useState(new Date());
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
   const timezoneOffset = new Date().getTimezoneOffset();
-  const today = startOfToday().getTime() - (timezoneOffset * 60 * 1000);
+  const today = Date().slice(0, 15);
+  const todayTimeStamp = startOfToday().getTime() - (timezoneOffset * 60 * 1000);
   const yearMonth = `${getYear(currentDisplayMonth)}${getMonth(currentDisplayMonth)}`;
   const { user, setUser } = useUser();
 
@@ -55,7 +56,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
     if (!user || !user.checkedDays) return;
 
     const yesterdayAsNumber = startOfYesterday().getTime() - (timezoneOffset * 60 * 1000);
-    const currentYearMonth = `${getYear(today)}${getMonth(today)}`;
+    const currentYearMonth = `${getYear(todayTimeStamp)}${getMonth(todayTimeStamp)}`;
     const checkedDaysInCurrentMonth = user?.checkedDays[currentYearMonth];
 
     if (!checkedDaysInCurrentMonth) {
@@ -127,7 +128,6 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
         today={today}
         isDarkMode={isDarkMode}
         handleCellClick={handleCellClick}
-        timezoneOffset={timezoneOffset}
       />
       {new Date(today).getMonth() === currentDisplayMonth.getMonth()
       && new Date(today).getFullYear() === currentDisplayMonth.getFullYear()
@@ -151,7 +151,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
               variant="contained"
               onClick={handleJumpToCurrentMonth}
             >
-              {format(today, 'MMMM')}
+              {format(todayTimeStamp, 'MMMM')}
             </Button>
           </Typography>
         )}

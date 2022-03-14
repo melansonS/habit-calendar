@@ -15,7 +15,7 @@ interface IUserTheme {
 
 export interface IUser {
     name: string
-    checkedDays: {[name: string]: number[]} | null,
+    checkedDays: {[name: string]: string[]} | null,
     isStreaking: boolean,
     currentStreak: number,
     longestStreak: number,
