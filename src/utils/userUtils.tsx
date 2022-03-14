@@ -1,4 +1,5 @@
 import { IUser } from '../context/userContext';
+import formatDateString from './formatDateString';
 
 export const unCheckToday = (
   user:IUser,
@@ -15,8 +16,7 @@ export const unCheckToday = (
     },
     currentStreak: user.currentStreak ? user.currentStreak - 1 : 0,
     longestStreak: checkedDaysInCurrentMonth
-      .includes(new Date(yesterdayAsNumber).toString()
-        .slice(0, 15)) ? user.longestStreak - 1 : user.longestStreak,
+      .includes(formatDateString(yesterdayAsNumber)) ? user.longestStreak - 1 : user.longestStreak,
     totalDays: user.totalDays - 1,
   };
   return filteredUser;

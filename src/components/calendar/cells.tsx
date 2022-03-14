@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   format,
   startOfWeek,
@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import SpaOutlinedIcon from '@mui/icons-material/SpaOutlined';
 import Grow from '@mui/material/Grow';
+import formatDateString from '../../utils/formatDateString';
 import Cell from './cell';
 import { transientConfig } from '../styledComponentTests';
 
@@ -56,13 +57,6 @@ export default function Cells({
   const endDate = endOfWeek(monthEnd);
   const currentMonthIndex = currentMonth.getMonth();
 
-  // TODO: memoize the array of Cell Nodes?
-
-  const checkedDaysAsStrings = useMemo(
-    () => checkedDays.map((day) => new Date(day).toString().slice(0, 15)),
-    [checkedDays],
-  );
-
   const allDatesOfMonth = eachDayOfInterval({ start: startDate, end: endDate });
   const allDayTimesOfMonth = allDatesOfMonth.map((date) => date.getTime());
   const dayCells = allDayTimesOfMonth.map((day, index) => {
@@ -85,15 +79,15 @@ export default function Cells({
       <Cell
         primary={primary.main}
         secondary={secondary.main}
-        isChecked={checkedDaysAsStrings.includes(new Date(day).toString().slice(0, 15))}
+        isChecked={checkedDays.includes(formatDateString(day))}
         isDarkMode={isDarkMode}
-        isToday={new Date(day).toString().slice(0, 15) === today}
+        isToday={formatDateString(day) === today}
         key={`col-${index % 7}-${day}`}
         onClick={() => handleCellClick(day)}
         contrastText={primary.contrastText}
         sx={{ height: { xs: '3rem', sm: '5rem' } }}
       >
-        {checkedDaysAsStrings.includes(new Date(day).toString().slice(0, 15)) && (
+        {checkedDays.includes(formatDateString(day)) && (
         <Grow
           in
           timeout={1000}

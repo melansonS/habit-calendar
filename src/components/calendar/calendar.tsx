@@ -12,6 +12,7 @@ import {
 import { debounce } from 'lodash';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import { Navigate } from 'react-router-dom';
+import formatDateString from '../../utils/formatDateString';
 import Cells from './cells';
 import Days from './days';
 import { useUser } from '../../context/userContext';
@@ -30,10 +31,11 @@ interface ICalendarProps {
 export default function Calendar({ isDarkMode } : ICalendarProps) {
   const [currentDisplayMonth, setCurrentDisplayMonth] = useState(new Date());
   const [isTodayChecked, setIsTodayChecked] = useState<boolean>(false);
-  const today = Date().slice(0, 15);
+  const today = formatDateString(Date());
   const todayTimeStamp = startOfToday().getTime();
   const yearMonthFormat = 'yyyy LLL';
-  const currentYearMonthString = format(todayTimeStamp, yearMonthFormat); // month year as string
+  const currentYearMonthString = format(todayTimeStamp, yearMonthFormat);
+  const displayYearMonthString = format(currentDisplayMonth, yearMonthFormat);
   const { user, setUser } = useUser();
 
   useEffect(() => {
@@ -72,7 +74,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const handleCellClick = (day: number) => {
-    console.log(currentYearMonthString, 'utc adjusted timestamp', day);
+    console.log(currentYearMonthString, 'utc adjusted timestamp', formatDateString(day));
   };
 
   const handleJumpToCurrentMonth = () => {
@@ -120,8 +122,8 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
       </Box>
       <Days currentMonth={currentDisplayMonth} />
       <Cells
-        checkedDays={user?.checkedDays && user.checkedDays[currentYearMonthString]
-          ? user.checkedDays[currentYearMonthString] : []}
+        checkedDays={user?.checkedDays && user.checkedDays[displayYearMonthString]
+          ? user.checkedDays[displayYearMonthString] : []}
         currentMonth={currentDisplayMonth}
         today={today}
         isDarkMode={isDarkMode}

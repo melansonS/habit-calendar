@@ -1,6 +1,7 @@
 import { startOfDay, subDays } from 'date-fns';
 import { ThemeNamesEnum } from '../utils/colorTypes';
 import { IUser } from './userContext';
+import formatDateString from '../utils/formatDateString';
 
 const mockUserData:IUser = {
   name: 'Mr.Mock',
@@ -25,10 +26,9 @@ const mockUserData:IUser = {
 };
 
 const todayTimeStamp = startOfDay(new Date()).getTime();
-const yesterday = new Date(subDays(todayTimeStamp, 1).getTime()).toString().slice(0, 15);
+const yesterday = formatDateString(subDays(todayTimeStamp, 1));
 
 if (mockUserData?.checkedDays && !mockUserData.checkedDays['2022 Mar'].includes(yesterday)) {
-  console.log('am not streaking');
   mockUserData.currentStreak = 0;
 }
 
@@ -52,6 +52,5 @@ if (allCheckedDays && allCheckedDays.includes(yesterday)) {
   }
 }
 
-console.log({ allCheckedDays }, 'current streak:', currentStreak);
 mockUserData.totalDays = allCheckedDays?.length || 0;
 mockUserData.currentStreak = currentStreak;
