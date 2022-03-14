@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {
   Box,
-  Paper,
+  // Paper,
   Typography,
 } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -29,26 +29,44 @@ export default function HomePage() {
   return (
     <div>
       <Box p={5}>
-        <Paper
-          elevation={7}
+        <Box
           sx={{
             p: 2,
-            height: 400,
+            height: 300,
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             width: '100%',
           }}
         >
-          <Typography variant="h5">
+          <Typography
+            variant="h3"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flexGrow: 1,
+              justifyContent: 'center',
+            }}
+          >
             Welcome!
           </Typography>
-          <Typography variant="h6" textAlign="center" component="span" sx={{ height: 'fit-content' }}>
-            Let&apos;s build some habits!
-          </Typography>
-          <LoginButton />
-        </Paper>
+          <Box
+            sx={{
+              p: 2,
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              width: '100%',
+            }}
+          >
+            <Typography variant="h6" textAlign="center" component="span" sx={{ height: 'fit-content', pb: 2 }}>
+              Let&apos;s build some habits!
+            </Typography>
+            <LoginButton />
+          </Box>
+        </Box>
       </Box>
     </div>
   );
