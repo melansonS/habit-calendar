@@ -24,9 +24,9 @@ _Mind the spin up time for the backend hosted on Heroku_
 
 ## Roadmap
 
-There are sill a couple of things that I'm looking to update and implement on this project such as;
+There are sill a couple of things that I'm looking to update and implement on this project:
 
 - Features:
   - Multiple named calendars for when you're trying to build more than one habit
-  - Social elements such as viewing connections' calendars, streaks as well as a ping/reminder them to help keep them accountable
+  - Social elements such as viewing connections' calendars, streaks as well as a ping/reminder to help keep them accountable
 - Migrate the back end off of Heroku for seamless start up and usage
