@@ -3,7 +3,7 @@
 
 A big focus of mine has recently been to work on building better habits and better systems. Implementing good routines and habits isn't something that just happens over night and I wanted to build something akin to my carved rubber stamps and paper calendar to help keep me on track.
 
-The intention behind the design of this project was to create something that is welcoming and easy to use. I opted to implement OAuth2 user authetification via Auth0's platform. This allows for easy log in - sign up as well as the option to log in with your Google credentials. I also wanted to be able customize the colors/ theme at will and was able to set that up using Material UI, it's theming features and it's customizeable palettes.
+The intention behind the design of this project was to create something that is welcoming and easy to use. I opted to implement OAuth2 user authetication via Auth0's platform. This allows for easy log in - sign up as well as the option to log in with your Google credentials. I also wanted to be able customize the colors/ theme at will and was able to set that up using Material UI, it's theming features and it's customizeable palettes.
 
 This project was built using HTML, CSS, React, NodeJs, MongoDB, Autho0 and the customizable Material UI Component Library
 
