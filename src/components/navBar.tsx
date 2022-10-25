@@ -5,6 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone';
 import Container from '@mui/material/Container';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Link } from 'react-router-dom';
 import DarkModeToggle from './darkModeToggle';
 import LogoutButton from './logoutButton';
 import NavMenu from './navMenu';
@@ -20,14 +21,23 @@ function NavBar() {
           <Box sx={{ width: '33%', display: { xs: 'flex' } }}>
             {isAuthenticated && (<NavMenu />)}
           </Box>
-
           <Box sx={{
             width: '33%',
             display: 'flex',
             justifyContent: 'center',
           }}
           >
-            <DateRangeTwoToneIcon fontSize="large" />
+            <Link
+              to="/calendar"
+            >
+              <DateRangeTwoToneIcon
+                sx={{
+                  color: 'white',
+                }}
+                fontSize="large"
+                color="inherit"
+              />
+            </Link>
           </Box>
 
           <Box sx={{
