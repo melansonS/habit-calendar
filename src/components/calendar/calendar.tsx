@@ -21,6 +21,7 @@ import { useUser } from '../../context/userContext';
 // @ts-ignore
 import audio from '../../audio/mixkit-cool-interface-click-tone-2568.wav';
 import { checkToday, newMonth, unCheckToday } from '../../utils/userUtils';
+import devLogger from '../../utils/devLogger';
 // import audio from '../../audio/mixkit-single-key-press-in-a-laptop-2541.wav';
 // import audio from '../../audio/mixkit-slide-click-1130.wav';
 // import audio from '../../audio/mixkit-plastic-bubble-click-1124.wav';
@@ -74,7 +75,7 @@ export default function Calendar({ isDarkMode } : ICalendarProps) {
   };
 
   const handleCellClick = (day: number) => {
-    console.log(yearMonth, 'utc adjusted timestamp', day - (timezoneOffset * 60 * 1000));
+    devLogger([yearMonth, 'utc adjusted timestamp', day - (timezoneOffset * 60 * 1000)]);
   };
 
   const handleJumpToCurrentMonth = () => {

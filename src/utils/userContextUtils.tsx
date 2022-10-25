@@ -2,6 +2,7 @@ import { IAlert } from '../context/alertContext';
 import { IUser } from '../context/userContext';
 import mockUserData from '../context/userMockData';
 import { URL } from './consts';
+import devLogger from './devLogger';
 import now from './useNow';
 
 interface IAPIResponse {
@@ -24,7 +25,7 @@ export const postUpdatedUser = async (user: IUser, accessToken: string) => {
       body: JSON.stringify(user),
     });
     const json:IAPIResponse = await res.json();
-    console.log('in post updated user', json);
+    devLogger(['in post updated user', json]);
     const response:IFetchResponse = {
       ...json,
       alert: {
@@ -66,7 +67,7 @@ export async function fetchUserData(accessToken:string) {
     };
     return response;
   } catch (err) {
-    console.log('usercontext fetch user data error:', err);
+    devLogger(['usercontext fetch user data error:', err]);
     const response:IFetchResponse = {
       success: false,
       user: mockUserData,
