@@ -13,7 +13,7 @@ function AlertContainer() {
   return (
     <Box
       sx={{
-        width: { xs: '80%', sm: '55%' },
+        width: { xs: '80%', sm: '40%', md: '25%' },
         position: 'fixed',
         zIndex: 5,
         bottom: '30px',
