@@ -73,7 +73,7 @@ export async function fetchUserData(accessToken:string) {
       user: mockUserData,
       alert: {
         type: 'error',
-        message: 'Unable to get data from the server, using temp Mock Data!',
+        message: 'Unable to get data from the server',
         id: `error${now()}`,
       },
     };
